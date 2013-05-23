@@ -1,0 +1,4 @@
+# tex compile files
+*.log
+*.aux
+
