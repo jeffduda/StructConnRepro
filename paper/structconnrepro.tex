@@ -20,16 +20,15 @@
 \def\citing{\color{darkgray}\cite}
 \def\keyFont{\fontsize{6}{11}\helveticabold }
 \def\firstAuthorLast{Sample {et~al}} %use et al only if is more than 1 author
-\def\Authors{First Author\,$^{1,*}$, Co-Author\,$^{2}$ and Co-Author\,$^2$}
+\def\Authors{Jeffrey T. Duda\,$^{1,*}$, Philip A. Cook\,$^{1}$ and James C. Gee\,$^1$}
 % Affiliations should be keyed to the author's name with superscript numbers and be listed as follows: Laboratory, Institute, Department, Organization, City, State abbreviation (USA, Canada, Australia), and Country (without detailed address information such as city zip codes or street names).
 % If one of the authors has a change of address, list the new address below the correspondence details using a superscript symbol and use the same symbol to indicate the author in the author list.
-\def\Address{$^{1}$Laboratory X, Institute X, Department X, Organization X, City X , State XX (only USA, Canada and Australia), Country X \\
-$^{2}$Laboratory X, Institute X, Department X, Organization X, City X , State XX (only USA, Canada and Australia), Country X  }
+\def\Address{$^{1}$Penn Image Computing and Science Laboratory, University of Pennsylvania, Department of Radiology, Philadelphia, PA, USA}
 % The Corresponding Author should be marked with an asterisk
 % Provide the exact contact address (this time including street name and city zip code) and email of the corresponding author
-\def\corrAuthor{corresponding Author}
-\def\corrAddress{Laboratory X, Institute X, Department X, Organization X, Street X, City X , State XX (only USA, Canada and Australia), Zip Code, X Country X}
-\def\corrEmail{email@uni.edu}
+\def\corrAuthor{Jeffrey T. Duda}
+\def\corrAddress{Penn Image Computing and Science Laboratory, University of Pennsylvania, Department of Radiolog, 3600 Market Street, Suite 370, Philadelphia, PA, USA}
+\def\corrEmail{jtduda@seas.upenn.edu}
 
 % \color{FrontiersBlue} Is the blue color, used in the Journal name, in the title, and the names of the sections
 
@@ -38,19 +37,24 @@ $^{2}$Laboratory X, Institute X, Department X, Organization X, City X , State XX
 \onecolumn
 \firstpage{1}
 
-\title[Running Title]{This is Title}
+\title[Reproducibility of structural graph metrics]{Reproducibility of graph metrics of human brain structural networks}
 \author[\firstAuthorLast ]{\Authors}
 \address{}
 \correspondance{}
 \editor{}
-\topic{Research Topic}
+\topic{Neuroinformatics with the Insight ToolKit}
 
 \maketitle
 \begin{abstract}
 
 \section{}
 %As a primary goal, the abstract should render the general significance and conceptual advance of the work clearly accessible to a broad readership. References should not be cited in the abstract.
-See the Summary Table at \\ \url{http://www.frontiersin.org/}\texttt{\journal}\url{/authorguidelines} \\for abstract requirement and length according to article type.
+%See the Summary Table at \\ \url{http://www.frontiersin.org/}\texttt{\journal}\url{/authorguidelines} \\for abstract requirement and length according to article type.
+% Abstract Max Length = 2000 characters
+% This was proposed abstract, change to legit abstract
+Recent interest in the human connectome has led to the application of graph theoretical analysis to human brain structural networks, in particular white matter connectivity inferred from diffusion imaging and fiber tractography. While these methods have been used to study a variety of patient populations, there has been less examination of the reproducibility of these methods. These graph metrics typically derive from fiber tractography, however a number of tractography algorithms exist and many of these are known to be sensitive to user-selected parameters. We examine how these algorithm and parameter choices influence the reproducibility of proposed graph metrics. 
+
+%A freely available data set, the Multi-Modal MRI Reproducibility Resource, will serve as the basis for this study. ANTs, based upon ITKv4, will be used for the registration and segmentation steps needed to align and label individual brains. Camino, an open-source toolkit, will be used for: DT reconstruction, fiber tracking, and the generation of structural connectivity matrices. An ITK module will be created to implement the graph analysis metrics.
 
 
 \tiny
