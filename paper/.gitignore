@@ -1,4 +1,7 @@
 # tex compile files
 *.log
 *.aux
+*.*.bak
+*.bbl
+*.blg
 
