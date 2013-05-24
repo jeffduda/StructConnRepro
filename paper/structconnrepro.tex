@@ -6,6 +6,7 @@
 %\documentclass{frontiersMED} % for Medicine articles
 
 \usepackage{url}
+\usepackage{tabularx}
 \usepackage{lineno}
 \linenumbers
 
@@ -88,34 +89,52 @@ Correlations between pairs of regions using a variety of structural measures \ci
 % Materials and Methods: This section may be divided by subheadings. This section should contain sufficient detail so that when read in conjunction with cited references, all procedures can be repeated.
 Science goes here.\\
 
-\subsection{Node metrics}
-Formulas go here.
-
-\subsection{Whole-graph metrics}
-More formulas go here.
-
 \begin{table}[!t]
 \processtable{Descriptions and references for graph metrics examined in this study.\label{Tab:01}}
 {\begin{tabular}{lll}
 \midrule
-Node Metric & Description & Reference\\\midrule
+Node metrics & Description & Reference\\\midrule
 Degree & Number of connections for a node & \\
 Clustering coefficient & Local neighborhood connectivity & \cite{Watts1998}\\
 Path length & Average shortest path to all other nodes & \cite{Watts1998}\\
-Global efficiency & ``Closeness'' to all other nodes &\cite{Latora2001}\\
+Global efficiency & ``Closeness'' to all other nodes & \cite{Latora2001}\\
 Local efficiency & ``Closeness'' to local nodes & \\
 \midrule
-Whole-graph metric\\
+Whole-graph metrics\\
 \midrule
 Small-world & & \cite{Watts1998}\\
 Synchronizability & & \cite{Motter2005}\\
 Assortativity & & \cite{Newman2002}\\
 Hierarchy & & \cite{Ravasz2003}\\
-Cost efficiency & &\cite{Achard2007}\\
-Rich-club coefficient & & \cite{Colizza2006}\\
-Edge overlap as function of density & &\\\botrule
+Cost efficiency & & \cite{Achard2007}\\
+Rich-club coefficient & Degree to which high-degree nodes preferentially inter-connect & \cite{Colizza2006}\\
+\midrule
+Network similarity measures\\
+\midrule
+Network overlap & & \cite{vanWijk2010}\\
+Edge overlap & Percentage of common edges in constant density networks & \cite{Weber2013} \\\botrule
 \end{tabular}}{}
 \end{table}
+
+\subsection{Node metrics}
+For more details on the node metrics see \cite{Rubinov2010}. 
+\begin{table}[!t]
+\processtable{Formulas for node metrics.\label{Tab:02}}
+{\begin{tabular}{ll}
+\midrule
+Degree & $K_i = \sum_{j=1}^{n}{A_{ij}}$\\
+Clustering coefficient & $C_i = 2*e_i / K_i ( K_i -1 )$\\
+Path length & $L = 1/N(N-1) \sum_{ij \in n, i \neq j}{d_{ij}}$\\
+Global efficiency & $E_{glob} = E(G) = 1/N(N-1) \sum_{i \neq j \in G}{1/d_{ij}}$\\
+Local efficiency & $E_{loc} = 1/N \sum_{i \in n}{E(G_i)}$\\\botrule
+\end{tabular}}{}
+\end{table}
+
+\subsection{Whole-graph metrics}
+More formulas go here.
+
+\subsection{Network Similarity}
+Use these to examine methods that extract sub-networks such as rich-club and constant density networks.
 
 %\textbf{Figure 1.}{ Enter the caption for your figure here.  Repeat as  necessary for each of your figures.}\label{fig:01}% Don't add the figures in the LaTeX files, please upload them when submitting the article. Frontiers will add the figures at the end of the provisional pdf.
 
