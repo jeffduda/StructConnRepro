@@ -19,7 +19,7 @@
 \def\articleType{}
 \def\citing{\color{darkgray}\cite}
 \def\keyFont{\fontsize{6}{11}\helveticabold }
-\def\firstAuthorLast{Sample {et~al}} %use et al only if is more than 1 author
+\def\firstAuthorLast{Duda {et~al}} %use et al only if is more than 1 author
 \def\Authors{Jeffrey T. Duda\,$^{1,*}$, Philip A. Cook\,$^{1}$ and James C. Gee\,$^1$}
 % Affiliations should be keyed to the author's name with superscript numbers and be listed as follows: Laboratory, Institute, Department, Organization, City, State abbreviation (USA, Canada, Australia), and Country (without detailed address information such as city zip codes or street names).
 % If one of the authors has a change of address, list the new address below the correspondence details using a superscript symbol and use the same symbol to indicate the author in the author list.
@@ -64,134 +64,116 @@ Recent interest in the human connectome has led to the application of graph theo
 
 \section{Introduction}
 
-% For Original Research Articles, Clinical Trial Articles, and Technology Reports the introduction should be succinct, with no subheadings.
-%
-%For Clinical Case Studies the Introduction should include symptoms at presentation, physical exams and lab results.
-%
-Prior work \cite{Bassett2011N,Cheng2012N,Irimia2012N,Owen2013BC,Manifesto}
+% For Technology Reports the introduction should be succinct, with no subheadings.
+Test retest of functional graph metrics via MEG \cite{Deuker2009}\\
+Test retest of functional graph metrics via fMRI \cite{Telesford2010}\\
+Test retest of structural graph metrics via DTI \cite{Owen2013BC}\\ 
+Test retest of structural graph metrics via DTI and DSI with multiple labeling schemes \cite{Bassett2011N}\\
+Intra and inter subject variability of structural graph metrics via DTI for binary and weighted networks \cite{Cheng2012N}\\
+Correlations between pairs of regions using a variety of structural measures \cite{Irimia2012N}\\
 
+\textbf{Novel contributions}
+\begin{enumerate}
+\item Public data and fully open source
+\item In-depth examination of deterministic tractography parameters
+\item Probabilistic tractograhy extensions
+\item In-depth analysis of streamline-to-matrix conversion
+\item Provides plug-and-play framework for evalation of new methods
+\item Easy to extend to functional study (BOLD and ASL) 
+\end{enumerate}
 
 
 %\begin{methods}
 \section{Material \& Methods}
-Science goes here
+% Materials and Methods: This section may be divided by subheadings. This section should contain sufficient detail so that when read in conjunction with cited references, all procedures can be repeated.
+Science goes here.\\
 
+\subsection{Node metrics}
+Formulas go here.
 
-\subsection{Original Research Articles, Clinical Trial Articles, and Technology Reports}
+\subsection{Whole-graph metrics}
+More formulas go here.
 
-For Original Research Articles, Clinical Trial Articles, and Technology Reports the following sections are mandatory:
+\begin{table}[!t]
+\processtable{Descriptions and references for graph metrics examined in this study.\label{Tab:01}}
+{\begin{tabular}{lll}
+\midrule
+Node Metric & Description & Reference\\\midrule
+Degree & Number of connections for a node & \\
+Clustering coefficient & Local neighborhood connectivity & \cite{Watts1998}\\
+Path length & Average shortest path to all other nodes & \cite{Watts1998}\\
+Global efficiency & ``Closeness'' to all other nodes &\cite{Latora2001}\\
+Local efficiency & ``Closeness'' to local nodes & \\
+\midrule
+Whole-graph metric\\
+\midrule
+Small-world & & \cite{Watts1998}\\
+Synchronizability & & \cite{Motter2005}\\
+Assortativity & & \cite{Newman2002}\\
+Hierarchy & & \cite{Ravasz2003}\\
+Cost efficiency & &\cite{Achard2007}\\
+Rich-club coefficient & & \cite{Colizza2006}\\
+Edge overlap as function of density & &\\\botrule
+\end{tabular}}{}
+\end{table}
 
-\begin{itemize}
-%for bulleted list, use itemize
-\item Introduction: Succinct, with no subheadings.
-\item Materials and Methods: This section may be divided by subheadings. This section should contain sufficient detail so that when read in conjunction with cited references, all procedures can be repeated.
-\item Results: This section may be divided by subheadings. Footnotes should not be used and have to be transferred into the main text.
-\item Discussion: This section may be divided by subheadings. Discussions should cover the key findings of the study: discuss any prior art related to the subject so to place the novelty of the discovery in the appropriate context; discuss the potential short-comings and limitations on their interpretations; discuss their integration into the current understanding of the problem and how this advances the current views; speculate on the future direction of the research and freely postulate theories that could be tested in the future.
-\end{itemize}
-
-Please note that the Material and Methods section can be placed in any of the following ways: before Results, before Discussion or after Discussion.
-
-\textbf{Figure 1.}{ Enter the caption for your figure here.  Repeat as  necessary for each of your figures.}\label{fig:01}% Don't add the figures in the LaTeX files, please upload them when submitting the article. Frontiers will add the figures at the end of the provisional pdf.
-
-
-\subsection{Clinical Case Studies}
-
-For Clinical Case Studies the following sections are mandatory:
-
-\begin{itemize}
-%for bulleted list, use itemize
-\item Introduction: Include symptoms at presentation, physical exams and lab results.
-\item Background: This section may be divided by subheadings. Include history and review of similar cases.
-\item Results: This section may be divided by subheadings. Include diagnosis and treatment.
-\item Concluding Remarks
-\end{itemize}
-
-Please note that the Material and Methods section can be placed in any of the following ways: before Results, before Discussion or after Discussion.
+%\textbf{Figure 1.}{ Enter the caption for your figure here.  Repeat as  necessary for each of your figures.}\label{fig:01}% Don't add the figures in the LaTeX files, please upload them when submitting the article. Frontiers will add the figures at the end of the provisional pdf.
 
 %\end{methods}
 
-
-
 \section{Results}
+%Results: This section may be divided by subheadings. Footnotes should not be used and have to be transferred into the main text
+Overview of what we found
 
-Frontiers requires figures to be submitted individually, in the same order as they are referred to in the manuscript. Figures will then be automatically embedded at the bottom of the submitted manuscript. Kindly ensure that each table and figure is mentioned in the text and in numerical order. Permission must be obtained for use of copyrighted material from other sources (including the web). Please note that it is compulsory to follow figure instructions. Figures which are not according to the guidelines will cause substantial delay during the production process.
+\subsection{Tractograpy}
+Algorithms, parameters
 
-\begin{table}[!t]
-\processtable{Resolution Requirements for the figures\label{Tab:01}}
-{\begin{tabular}{lllll}\toprule
-Image Type & Description & Format & Color Mode & Resolution\\\midrule
-Line Art & An image composed of lines and text,  & TIFF, EPS, JPEG & RGB, Bitmap & 900 - 1200 dpi\\
-           & which does not contain tonal or shaded areas.& & &\\
-           Halftone & A continuous tone photograph, which contains no text. & TIFF, EPS, JPEG & RGB, Grayscale & 300 dpi\\
-Combination & Image contains halftone + text or line art elements. & TIFF, EPS, JPEG & RGB,Grayscale & 600 - 900 dpi\\\botrule
-\end{tabular}}{This is a footnote}
-\end{table}
+\subsection{Matrix Derivation}
+Turning streamlines into nice N x N matrices
 
-\begin{equation}
-\sum x+ y =Z\label{eq:01}
-\end{equation}
+%\begin{table}[!t]
+%\processtable{Resolution Requirements for the figures\label{Tab:01}}
+%{\begin{tabular}{lllll}\toprule
+%Image Type & Description & Format & Color Mode & Resolution\\\midrule
+%Line Art & An image composed of lines and text,  & TIFF, EPS, JPEG & RGB, Bitmap & 900 - 1200 dpi\\
+%          & which does not contain tonal or shaded areas.& & &\\
+%         Halftone & A continuous tone photograph, which contains no text. & TIFF, EPS, JPEG & RGB, Grayscale & 300 dpi\\
+%Combination & Image contains halftone + text or line art elements. & TIFF, EPS, JPEG & RGB,Grayscale & 600 - 900 dpi\\\botrule
+%\end{tabular}}{This is a footnote}
+%\end{table}
 
-\textbf{Table\ref{Tab:01}} shows the resolution requirements for the figures. The figures must be legible:
-\begin{enumerate}
-\item The smallest visible text is no less than 8 points in height, when viewed at actual size.
-\item Solid lines are not broken up.
-\item Image areas are not pixelated or stair stepped.
-\item Text is legible and of high quality.
-\item Any lines in the graphic are no smaller than 2 points width.
-\end{enumerate}
+%\begin{equation}
+%\sum x+ y =Z\label{eq:01}
+%\end{equation}
 
-\textbf{Figure 2.}{ Enter the caption for your figure here.  Repeat as  necessary for each of your figures.}\label{fig:02}
+%\textbf{Table\ref{Tab:01}} shows the resolution requirements for the figures. The figures must be legible:
+%\begin{enumerate}
+%\item The smallest visible text is no less than 8 points in height, when viewed at actual size.
+%\item Solid lines are not broken up.
+%\item Image areas are not pixelated or stair stepped.
+%\item Text is legible and of high quality.
+%\item Any lines in the graphic are no smaller than 2 points width.
+%\end{enumerate}
+
+%\textbf{Figure 2.}{ Enter the caption for your figure here.  Repeat as  necessary for each of your figures.}\label{fig:02}
 
 \section{Discussion}
-
-Text Text Text Text Text Text  Text Text Text Text Text Text Text Text Text  Text Text Text Text Text Text Text Text Text Text.
-Additional Requirements:
-\subsection{Corrections}
-
-Minor corrections to published articles can be communicated to the Frontiers Production Office at production.office@frontiersin.org. If you need to communicate important changes to an article please submit a General Commentary. Submit the article with the title “Erratum: Original Title of Article”.
-
-\subsection{Commentaries on Articles}
-
-At the beginning of your manuscript provide the citation of the article commented on.
-
-\subsection{Focused Reviews}
-
-For Tier 2 invited Focused Reviews the sections Introduction, Material and Methods, Results, and Discussion are recommended. In addition the authors must submit a short biography of the corresponding author(s). This short biography has a maximum of 600 characters, including spaces. \\
-A picture (5 x 5 cm, in *.tif or *.jpg, min 300 dpi) must be submitted along with the biography in the manuscript and separately during figure upload.
-Focused Reviews highlight and explain key concepts of your work. Please highlight a minimum of four and a maximum of ten key concepts in bold in your manuscript and provide the definitions/explanations at the end of your manuscript under “Key Concepts”. Each definition has a maximum of 400 characters, including spaces.
-
-\subsection{Human Search and Animal Research}
-
-All experiments on live vertebrates or higher invertebrates must be performed in accordance with relevant institutional and national guidelines and regulations. In the manuscript, authors must identify the committee approving the experiments and must confirm that all experiments conform to the relevant regulatory standards. For manuscripts reporting experiments on human subjects, authors must identify the committee approving the experiments and must also include a statement confirming that informed consent was obtained from all subjects. In Original Research Articles and Clinical Trial Articles these statements should appear in the Materials and Methods section.
-
-\subsection{Clinical Trial Registration}
-
-Clinical trials should be registered in a public trials registry in order to become the object of a publication at Frontiers. Trials must be registered at or before the start of patient enrollment. A clinical trial is defined as"any research study that prospectively assigns human participants or groups of humans to one or more health-related interventions to evaluate the effects on health outcomes."(\url{www.who.int/ictrp/en}). A list of acceptable registries can be found at \url{www.who.int/ictrp/en and www.icmje.org}.
-
-\subsection{Inclusion of Proteomics Data}
-
-Authors should provide relevant information relating to how the peptide/protein matches were undertaken, including methods used to process and analyze data, false discovery rates (FDR) for large-scale studies and threshold or cut-off rates for peptide and protein matches. Further information could include software used, mass spectrometer type, sequence database and version, number of sequences in database, processing methods, mass tolerances used for matching, variable/fixed modifications, allowable missed cleavages, etc.
-\\
-Authors should provide as supplementary material information used to identify proteins and/or peptides. This should include information such as accession numbers, observed mass (m/z), charge, delta mass, matched mass, peptide/protein scores, peptide modification, miscleavages, peptide sequence, match rank, matched species (for cross species matching), number of peptide matches, ambiguous protein/peptide matches should be indicated, etc.
-For quantitative proteomics analyses authors should provide information to justify the statistical significance including biological replicates, statistical methods, estimates of uncertainty and the methods used for calculating error.\\
-For peptide matches with biologically relevant post-translational modifications (PTM) and for any protein match that has occurred using a single mass spectrum, authors should include this information as raw data, annotated spectra or submit data to an online repository (recommended option).
-Authors are encouraged to submit raw or matched data and 2-DE images to public proteomics repositories. Submission codes and/or links to data should be provided within the manuscript.
+% Discussion: This section may be divided by subheadings. Discussions should cover the key findings of the study: discuss any prior art related to the subject so to place the novelty of the discovery in the appropriate context; discuss the potential short-comings and limitations on their interpretations; discuss their integration into the current understanding of the problem and how this advances the current views; speculate on the future direction of the research and freely postulate theories that could be tested in the future.
 
 \subsection{Data Sharing}
-
-Frontiers supports the policy of data sharing, and authors are advised to make freely available any materials and information described in their article, and any data relevant to the article (while not compromising confidentiality in the context of human-subject research) that may be reasonably requested by others for the purpose of academic and non-commercial research. In regards to deposition of data and data sharing through databases, Frontiers urges authors to comply with the current best practices within their discipline.
+%Frontiers supports the policy of data sharing, and authors are advised to make freely available any materials and information described in their article, and any data relevant to the article (while not compromising confidentiality in the context of human-subject research) that may be reasonably requested by others for the purpose of academic and non-commercial research. In regards to deposition of data and data sharing through databases, Frontiers urges authors to comply with the current best practices within their discipline.
 
 \section*{Disclosure/Conflict-of-Interest Statement}
 %All relationships financial, commercial or otherwise that might be perceived by the academic community as representing a potential conflict of interest must be described. If no such relationship exists, authors will be asked to declare that the research was conducted in the absence of any commercial or financial relationships that could be construed as a potential conflict of interest.
 The authors declare that the research was conducted in the absence of any commercial or financial relationships that could be construed as a potential conflict of interest.
 
 \section*{Acknowledgement}
-Text Text Text Text Text Text  Text Text Text Text Text Text Text Text  Text Text Text Text Text Text Text Text Text  Text Text Text.
+Shoutouts to our peeps
 
-\paragraph{Funding\textcolon} Text Text Text Text Text Text  Text Text.
+\paragraph{Funding\textcolon} Shoutout to our peep\$
 
 \section*{Supplemental Data}
-Text Text Text Text Text Text  Text Text Text Text Text Text Text Text Text  Text Text Text Text Text Text Text Text Text  Text Text Text.
+Maybe need this, maybe not
 
 \bibliographystyle{frontiersinSCNS} % for Science articles
 %\bibliographystyle{frontiersinMED} % for Medicine articles
