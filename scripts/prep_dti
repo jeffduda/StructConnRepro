@@ -1,0 +1,107 @@
+#!/usr/bin/perl -w
+
+
+# This function generates random strings of a given length
+# http://th.atguy.com/mycode/generate_random_string/
+sub generate_random_string
+{
+	my $length_of_randomstring=shift;# the length of 
+			 # the random string to generate
+
+	my @chars=('a'..'z','A'..'Z','0'..'9','_');
+	my $random_string;
+	foreach (1..$length_of_randomstring) 
+	{
+		# rand @chars will generate a random 
+		# number between 0 and scalar @chars
+		$random_string.=$chars[rand @chars];
+	}
+	return $random_string;
+}
+
+
+my @subs=`ls ../subjects`;
+
+
+
+foreach my $sub (@subs) {
+  my @times=`ls ../subjects/$sub`;
+  foreach my $time (@times) {
+  
+    chomp($sub);
+    chomp($time);
+
+    my $tmpdir = "/tmp/${sub}_${time}/";
+    if ( ! -d $tmpdir ) 
+      {
+      `mkdir $tmpdir`;
+      }
+    else
+      {
+      $tmpdir = "/tmp/".generate_random_string(6)."/";
+      `mkdir $tmpdir`;
+      }
+
+    my $dir="../subjects/".$sub."/".$time."/DTI/";
+    my $dti=`ls ../subjects/${sub}/${time}/DTI/*DTI.nii.gz`;
+    chomp($dti);
+  
+    my @testb0 = glob( "../subjects/${sub}/${time}/DTI/*b0.nii.gz" );
+    print( "@testb0 \n");
+
+    if ( scalar( @testb0 ) < 1 )
+      {
+      print ( "Prepping $dti \n" );
+ 
+      my @names = split("-DTI.nii.gz", $dti);
+      my $dwi = $names[0]."-DWI.nii.gz";
+      my $scheme = $names[0]."-DWI.scheme";
+      
+      my $grad = `ls ../subjects/${sub}/${time}/DTI/*.grad`;
+      my $b = `ls ../subjects/${sub}/${time}/DTI/*.b`;
+      
+      # eliminate average DWI at end of 4D image
+      system("split4dnii -inputfile ${dti} -outputroot ${tmpdir}dwi ");
+      system( "rm ${tmpdir}dwi0034.nii.gz" );
+      
+      my @dwis = glob( "${tmpdir}dwi*.nii.gz" );
+      my $b0 = $dwis[ scalar( @dwis ) - 1 ];
+      system( "cp $b0 $names[0]-b0.nii.gz" );
+      
+      my $dwiList = join( " ", @dwis );  
+      my $nImages = scalar( @dwis );
+      system("ImageMath 4 $dwi TimeSeriesAssemble 1.0 0.0 $dwiList");
+      system("antsMotionCorr -d 3 -o [ $names[0]-DWI, $dwi, $names[0]-avgdwi.nii.gz ] -m mi[ ${b0} , $dwi, 1 , 32 , Regular, 0.05 ]  -t Affine[ 0.25 ] -i 10 -u 1 -e 1 -s 1 -f 1 -n $nImages -l 0" ); 
+      system("rm ${tmpdir}dwi*.nii.gz");
+      system("rmdir ${tmpdir}");
+      
+      open(DATA,"<${grad}") or die "Can't open grad file";
+      my @gradlines = <DATA>;
+      close(DATA);
+      
+      open(DATA,"<${b}") or die "Can't open b file";
+      my @blines = <DATA>;
+      close(DATA);
+    
+      open(DATA,">${scheme}") or die "Can't write scheme file";
+      
+      print DATA "VERSION: 2\n";
+      
+      for ($n = 0; $n < 33; $n++)
+        {
+          my $nGrad = $gradlines[$n];
+          my $nB = $blines[$n];
+          
+          chomp($nGrad);
+          chomp($nB);
+          
+          print DATA $nGrad.$nB."\n";
+          
+        }
+      
+      close(DATA);
+    }
+      
+      
+  }
+}    
