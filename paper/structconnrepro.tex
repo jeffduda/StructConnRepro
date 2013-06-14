@@ -8,6 +8,7 @@
 \usepackage{url}
 \usepackage{tabularx}
 \usepackage{lineno}
+\usepackage[english]{babel}
 \linenumbers
 
 
@@ -77,9 +78,9 @@ Correlations between pairs of regions using a variety of structural measures \ci
 \begin{enumerate}
 \item Public data and fully open source
 \item In-depth examination of deterministic tractography parameters
-\item Probabilistic tractograhy extensions
+\item Probabilistic tractography extensions
 \item In-depth analysis of streamline-to-matrix conversion
-\item Provides plug-and-play framework for evalation of new methods
+\item Provides plug-and-play framework for evaluation of new methods and/or alternate data sets
 \item Easy to extend to functional study (BOLD and ASL) 
 \end{enumerate}
 
@@ -87,7 +88,7 @@ Correlations between pairs of regions using a variety of structural measures \ci
 %\begin{methods}
 \section{Material \& Methods}
 % Materials and Methods: This section may be divided by subheadings. This section should contain sufficient detail so that when read in conjunction with cited references, all procedures can be repeated.
-Science goes here.\\
+Provide an overview of what we are examining here
 
 \begin{table}[!t]
 \processtable{Descriptions and references for graph metrics examined in this study.\label{Tab:01}}
@@ -138,17 +139,43 @@ Use these to examine methods that extract sub-networks such as rich-club and con
 
 %\textbf{Figure 1.}{ Enter the caption for your figure here.  Repeat as  necessary for each of your figures.}\label{fig:01}% Don't add the figures in the LaTeX files, please upload them when submitting the article. Frontiers will add the figures at the end of the provisional pdf.
 
+\subsection{Tractograpy}
+Algorithms, parameters
+
+\subsection{Matrix Derivation}
+Turning streamlines into nice N x N matrices
+
+\subsection{Neuroimaging Data}
+The Multi-Modal MRI Reproducibility Resource~\cite{kirby} provides a test-retest data set consisting of 21 subjects with two time points each for which T1-weighted anatomical images and diffusion tensor images were acquired. Other image types, not examined here, were also acquired making this data useful for future examinations of structure and function.  A population averaged template and manually defined cortical labels for one time point for each subject are available from the Mindboggle project.
+
+\subsection{Image Analysis}
+
+\textbf{Minimal processing}
+\begin{enumerate}
+\item Intra-subject registration for label transfer
+\item B0-T1 registration
+\item DTI reconstruction
+\item MTR ?
+\end{enumerate}
+
+\textbf{Optional processing}
+\begin{enumerate}
+\item Registration to template ( for additional label sets )
+\end{enumerate}
+
+\textbf{Future processing}
+\begin{enumerate}
+\item Cortical thickness
+\item BOLD / ASL / etc
+\end{enumerate}
+
+
 %\end{methods}
 
 \section{Results}
 %Results: This section may be divided by subheadings. Footnotes should not be used and have to be transferred into the main text
 Overview of what we found
 
-\subsection{Tractograpy}
-Algorithms, parameters
-
-\subsection{Matrix Derivation}
-Turning streamlines into nice N x N matrices
 
 %\begin{table}[!t]
 %\processtable{Resolution Requirements for the figures\label{Tab:01}}
