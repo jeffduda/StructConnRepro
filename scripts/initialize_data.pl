@@ -55,12 +55,27 @@ if ( ! -d "../data/MMRR-21_subjects" ) {
     system( "mv ${file}* ../data/MMRR-21_subjects/${file}/." );
     system( "gzip ../data/MMRR-21_subjects/${file}/*.nii" );
   }  
+}
+
+if ( ! -d "../data/MMRR-21_template" ) {
   
+  print ( "Get Mindboggle-101 MMRR-21 data\n" );
+
   # Get the mindboggle MMRR-21 template and manually defined labels
   my @mindboggleurls = ( "http://mindboggle.info/data/mindboggle101/MMRR-21_volumes.tar.gz", "http://mindboggle.info/data/templates/ants/MMRR-21_template.nii.gz", "http://mindboggle.info/data/templates/ants/MMRR-21_head_template.nii.gz" );
   if ( DownloadFiles( @mindboggleurls ) ) {
     exit 1;
   }
+  my $mindbogglereadmeurl = "http://mindboggle.info/data/mindboggle101/README.txt";
+  if ( DownloadFiles( $mindbogglereadmeurl ) ) {
+    exit 1;
+  }
+
+  if ( ! -d "../data/info" ) {
+    system( "mkdir ../data/info" );
+  }
+  system( "mv README.txt ../data/info/mindbogglereadme.txt" );
+
   system( "tar xfz MMRR-21_volumes.tar.gz" );
   system( "rm MMRR-21_volumes.tar.gz" );
   system( "mkdir ../data/MMRR-21_template" );
@@ -69,20 +84,33 @@ if ( ! -d "../data/MMRR-21_subjects" ) {
   
   for ( my $i = 1; $i <= 42; $i++) {
     my $id = sprintf( "%02d", $i );
-    my @mbfiles = glob( "../data/MMRR-21_volumes/MMRR-21-${i}/*.nii.gz" );
-    print ( "@mbfiles \n" );
-    foreach my $file ( @mbfiles ) {
-      chomp($file);
-      my ($filename, $filedir ) = fileparse( $file ); 
-      system( "mv $file ../data/MMRR-21_subjects/KKI2009-${id}/KKI2009-${id}-$filename" );
+
+    my @mbID = `cat ../data/info/mindbogglereadme.txt | grep KKI2009-${id}`;
+    chomp(@mbID);
+    if ( scalar(@mbID) > 0 ) {
+      my @mbHash = split( " ",$mbID[0] );
+      print ( "$mbHash[0] -> $mbHash[1] \n" );
+      my $mbName = $mbHash[0];
+      my $mmrrName = $mbHash[1];
+
+      my @mbfiles = glob( "MMRR-21_volumes/${mbName}/*.nii.gz" );
+      foreach my $file ( @mbfiles ) {
+        chomp($file);
+        my ($filename, $filedir ) = fileparse( $file );
+        chomp($filename);
+        system( "cp $file ../data/MMRR-21_subjects/${mmrrName}/${mmrrName}-$filename" );
+      }
+
     }
+    
+
   }
-  system( "rm -R MMRR-21_volumes" );
+  system( "rm -Rf MMRR-21_volumes" );
 }
 
 # Sometimes it's convenient to have a subject/timepoint directory structure
 # so we set up links for that here
-if ( ! -d "../data/MMRR_21_ids" ) {
+if ( ! -d "../data/MMRR-21_ids" ) {
   system( "mkdir ../data/MMRR-21_ids" );
   my @ids = (849,934,679,906,913,142,127,742,422,815,906,239,916,959,814,505,959,492,239,142,815,679,800,916,849,814,800,656,742,113,913,502,113,127,505,502,934,492,346,656,346,422);
   my $count = 1;
