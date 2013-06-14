@@ -102,8 +102,6 @@ if ( ! -d "../data/MMRR-21_template" ) {
       }
 
     }
-    
-
   }
   system( "rm -Rf MMRR-21_volumes" );
 }
@@ -112,7 +110,10 @@ if ( ! -d "../data/MMRR-21_template" ) {
 # so we set up links for that here
 if ( ! -d "../data/MMRR-21_ids" ) {
   system( "mkdir ../data/MMRR-21_ids" );
+  
+  # subject ids in order to acquisition id
   my @ids = (849,934,679,906,913,142,127,742,422,815,906,239,916,959,814,505,959,492,239,142,815,679,800,916,849,814,800,656,742,113,913,502,113,127,505,502,934,492,346,656,346,422);
+
   my $count = 1;
   foreach my $id (@ids) {
     if ( ! -d "../data/MMRR-21_ids/$id" ) {

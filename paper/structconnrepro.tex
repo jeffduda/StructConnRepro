@@ -67,12 +67,12 @@ Recent interest in the human connectome has led to the application of graph theo
 \section{Introduction}
 
 % For Technology Reports the introduction should be succinct, with no subheadings.
-Test retest of functional graph metrics via MEG \cite{Deuker2009}\\
-Test retest of functional graph metrics via fMRI \cite{Telesford2010}\\
-Test retest of structural graph metrics via DTI \cite{Owen2013BC}\\ 
-Test retest of structural graph metrics via DTI and DSI with multiple labeling schemes \cite{Bassett2011N}\\
-Intra and inter subject variability of structural graph metrics via DTI for binary and weighted networks \cite{Cheng2012N}\\
-Correlations between pairs of regions using a variety of structural measures \cite{Irimia2012N}\\
+Test retest of functional graph metrics via MEG \citep{Deuker2009}\\
+Test retest of functional graph metrics via fMRI \citep{Telesford2010}\\
+Test retest of structural graph metrics via DTI \citep{Owen2013BC}\\ 
+Test retest of structural graph metrics via DTI and DSI with multiple labeling schemes \citep{Bassett2011N}\\
+Intra and inter subject variability of structural graph metrics via DTI for binary and weighted networks \citep{Cheng2012N}\\
+Correlations between pairs of regions using a variety of structural measures \citep{Irimia2012N}\\
 
 \textbf{Novel contributions}
 \begin{enumerate}
@@ -96,29 +96,29 @@ Provide an overview of what we are examining here
 \midrule
 Node metrics & Description & Reference\\\midrule
 Degree & Number of connections for a node & \\
-Clustering coefficient & Local neighborhood connectivity & \cite{Watts1998}\\
-Path length & Average shortest path to all other nodes & \cite{Watts1998}\\
-Global efficiency & ``Closeness'' to all other nodes & \cite{Latora2001}\\
+Clustering coefficient & Local neighborhood connectivity & \citep{Watts1998}\\
+Path length & Average shortest path to all other nodes & \citep{Watts1998}\\
+Global efficiency & ``Closeness'' to all other nodes & \citep{Latora2001}\\
 Local efficiency & ``Closeness'' to local nodes & \\
 \midrule
 Whole-graph metrics\\
 \midrule
-Small-world & & \cite{Watts1998}\\
-Synchronizability & & \cite{Motter2005}\\
-Assortativity & & \cite{Newman2002}\\
-Hierarchy & & \cite{Ravasz2003}\\
-Cost efficiency & & \cite{Achard2007}\\
-Rich-club coefficient & Degree to which high-degree nodes preferentially inter-connect & \cite{Colizza2006}\\
+Small-world & & \citep{Watts1998}\\
+Synchronizability & & \citep{Motter2005}\\
+Assortativity & & \citep{Newman2002}\\
+Hierarchy & & \citep{Ravasz2003}\\
+Cost efficiency & & \citep{Achard2007}\\
+Rich-club coefficient & Degree to which high-degree nodes preferentially inter-connect & \citep{Colizza2006}\\
 \midrule
 Network similarity measures\\
 \midrule
-Network overlap & & \cite{vanWijk2010}\\
-Edge overlap & Percentage of common edges in constant density networks & \cite{Weber2013} \\\botrule
+Network overlap & & \citep{vanWijk2010}\\
+Edge overlap & Percentage of common edges in constant density networks & \citep{Weber2013} \\\botrule
 \end{tabular}}{}
 \end{table}
 
 \subsection{Node metrics}
-For more details on the node metrics see \cite{Rubinov2010}. 
+For more details on the node metrics see \citep{Rubinov2010}. 
 \begin{table}[!t]
 \processtable{Formulas for node metrics.\label{Tab:02}}
 {\begin{tabular}{ll}
@@ -146,7 +146,14 @@ Algorithms, parameters
 Turning streamlines into nice N x N matrices
 
 \subsection{Neuroimaging Data}
-The Multi-Modal MRI Reproducibility Resource~\cite{kirby} provides a test-retest data set consisting of 21 subjects with two time points each for which T1-weighted anatomical images and diffusion tensor images were acquired. Other image types, not examined here, were also acquired making this data useful for future examinations of structure and function.  A population averaged template and manually defined cortical labels for one time point for each subject are available from the Mindboggle project.
+The Multi-Modal MRI Reproducibility Resource~\citep{Landman2011}
+provides a test-retest data set consisting of 21 subjects with two
+time points each for which T1-weighted anatomical images and diffusion
+tensor images were acquired. Other image types, not examined here,
+were also acquired making this data useful for future examinations of
+structure and function.  A population averaged template and manually
+defined cortical labels for one time point for each subject are
+available as part of the Mindboggle-101 dataset \citep{Klein2012}.
 
 \subsection{Image Analysis}
 
@@ -157,6 +164,14 @@ The Multi-Modal MRI Reproducibility Resource~\cite{kirby} provides a test-retest
 \item DTI reconstruction
 \item MTR ?
 \end{enumerate}
+For each subject, cortical labels were manually defined on the
+T1-weighted image from a single time-point. In order to label the
+addtional time-point, we use the ANTs Toolkit to find an affine
+mapping between the T1-weighted images using the cross-correlation
+metric. The cortical labels are then mapped into the unlabeled image
+using nearest-neighbor interpolation.
+
+
 
 \textbf{Optional processing}
 \begin{enumerate}
