@@ -70,11 +70,16 @@ if ( ! -d "../data/MMRR-21_template" ) {
   if ( DownloadFiles( $mindbogglereadmeurl ) ) {
     exit 1;
   }
+  my @mindbogglelabelurl = "http://www.mindboggle.info/data/labels.surface.DKT31.fullnames.txt";
+  if ( DownloadFiles( $mindbogglelabelurl ) ) {
+    exit 1;
+  }
 
   if ( ! -d "../data/info" ) {
     system( "mkdir ../data/info" );
   }
   system( "mv README.txt ../data/info/mindbogglereadme.txt" );
+  system( "mv /labels.surface.DKT31.fullnames.txt ../data/info/." );
 
   system( "tar xfz MMRR-21_volumes.tar.gz" );
   system( "rm MMRR-21_volumes.tar.gz" );
@@ -111,7 +116,7 @@ if ( ! -d "../data/MMRR-21_template" ) {
 if ( ! -d "../data/MMRR-21_ids" ) {
   system( "mkdir ../data/MMRR-21_ids" );
   
-  # subject ids in order to acquisition id
+  # subject ids, listed according to acquisition id
   my @ids = (849,934,679,906,913,142,127,742,422,815,906,239,916,959,814,505,959,492,239,142,815,679,800,916,849,814,800,656,742,113,913,502,113,127,505,502,934,492,346,656,346,422);
 
   my $count = 1;
