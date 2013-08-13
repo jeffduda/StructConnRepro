@@ -49,30 +49,79 @@
 \maketitle
 \begin{abstract}
 
-\section{}
+%\section{}
 %As a primary goal, the abstract should render the general significance and conceptual advance of the work clearly accessible to a broad readership. References should not be cited in the abstract.
 %See the Summary Table at \\ \url{http://www.frontiersin.org/}\texttt{\journal}\url{/authorguidelines} \\for abstract requirement and length according to article type.
 % Abstract Max Length = 2000 characters
-% This was proposed abstract, change to legit abstract
-Recent interest in the human connectome has led to the application of graph theoretical analysis to human brain structural networks, in particular white matter connectivity inferred from diffusion imaging and fiber tractography. While these methods have been used to study a variety of patient populations, there has been less examination of the reproducibility of these methods. These graph metrics typically derive from fiber tractography, however a number of tractography algorithms exist and many of these are known to be sensitive to user-selected parameters. The methods used to derive a connectivity matrix from fiber tractography output also influence the resulting graph metrics. Here we examine how these algorithm and parameter choices influence the reproducibility of proposed graph metrics. 
+Recent interest in human brain connectivity has led to the application of
+graph theoretical analysis to human brain structural networks, in
+particular white matter connectivity inferred from diffusion imaging
+and fiber tractography. While these methods have been used to study a
+variety of patient populations, there has been less examination of the
+reproducibility of these methods. These graph metrics typically derive
+from fiber tractography, however a number of tractography algorithms
+exist and many of these are known to be sensitive to user-selected
+parameters. The methods used to derive a connectivity matrix from
+fiber tractography output may also influence the resulting graph
+metrics. Here we examine how these algorithm and parameter choices
+influence the reproducibility of proposed graph metrics on a publicly
+available test-retest dataset consisting of 21 healthy young
+adults. Metrics for both weighted and unweighted network summary
+measures are examined using the intraclass correlation coefficient
+(ICC) and Bland-Altman plots. RESULTS
 
 %A freely available data set, the Multi-Modal MRI Reproducibility Resource, will serve as the basis for this study. ANTs, based upon ITKv4, will be used for the registration and segmentation steps needed to align and label individual brains. Camino, an open-source toolkit, will be used for: DT reconstruction, fiber tracking, and the generation of structural connectivity matrices. An ITK module will be created to implement the graph analysis metrics.
 
 
 \tiny
-  \section{Keywords:} Structure Tractography Connectivity Brain Network Reproducibility  %All article types: you may provide up to 8 keywords; at least 5 are mandatory.
+  \section{Keywords:} Structure Tractography Connectivity Brain
+  Network Reproducibility Graph  %All article types: you may provide up to 8 keywords; at least 5 are mandatory.
 \end{abstract}
 
-
-\section{Introduction}
-
 % For Technology Reports the introduction should be succinct, with no subheadings.
-Test retest of functional graph metrics via MEG \citep{Deuker2009}\\
-Test retest of functional graph metrics via fMRI \citep{Telesford2010}\\
-Test retest of structural graph metrics via DTI \citep{Owen2013BC}\\ 
-Test retest of structural graph metrics via DTI and DSI with multiple labeling schemes \citep{Bassett2011N}\\
-Intra and inter subject variability of structural graph metrics via DTI for binary and weighted networks \citep{Cheng2012N}\\
-Correlations between pairs of regions using a variety of structural measures \citep{Irimia2012N}\\
+\section{Introduction}
+Combining magnetic resonance imaging (MRI) of the human brain with graph
+theory analysis has emerged as a poweful approach to studying
+large-scale networks of both structural and functional
+connectivity. Specifically, the use of diffusion weighted MRI and
+associated fiber tractography methods provide the ability to identify
+the long-range pathways that connect cortical regions and form a
+network architecture~\citep{Basser2000,Lazar2003,Hagmann2003,Xue1999}. 
+The use of graph theoretical analysis to study
+the topology of these structural networks has increasingly been used to
+examine the structural consequences of neurological disorders \citep{Xie2012}
+as well as the relationship between structure and function \citep{}. 
+
+Previous studies examining the reproducibily of graph-based metrics in
+functional networks have shown good levels of repoducibily in MEG
+\citep{Deuker2009}, fMRI using BOLD contrast
+\citep{Telesford2010,Braun2012,Schwarz2011,Liang2012,Weber2013} and
+arterial spin labeling \citep{Weber2013}. A number of studies have also examined
+reproducibily in structural networks, each focusing on various aspects
+of the complex processing pipeline that is a prerequesite for these
+measures. These have included studies of diffusion spectrum imaging
+\citep{Cammoun2012,Bassett2011N} and high angular resolution diffusion
+imaging \citep{Dennis2012}. Some studies have examined probabilistic
+tractography \citep{Owen2013BC,Vaessen2010}. DTI-based studies using
+deterministic tractography have included the examination of
+tractography seed density \citep{Cheng2012N}, anatomic label density
+\citep{Bassett2011N}, and studies examining a variety of network
+measures \citep{Cheng2012N,Irimia2012N}. In the paper we constrain our
+analysis DTI-based measures that incorporate deteministic fiber
+tractograpy. Within this constraint, we examine multiple algortihms
+for computing streamlines and their required parameters to examine
+their influence on the final graph metrics. 
+
+%Test retest of functional graph metrics via MEG \citep{Deuker2009}\\
+%Test retest of functional graph metrics via fMRI \citep{Telesford2010,Liang2012,Braun2012}\\
+%Test retest of structural graph metrics via DTI \citep{Owen2013BC}\\ 
+%Test retest of structural graph metrics via DTI acquisition parameters \citep{Vaessen2010}\\
+%Test retest of soft thresholding in fMRI \citep{Schwarz2011}\\
+%Test restest of functionl graph metrics via ASL \citep{Weber2013}\\
+%Test retest of structural graph metrics via DTI and DSI with multiple labeling schemes \citep{Bassett2011N}\\
+%Intra and inter subject variability of structural graph metrics via DTI for binary and weighted networks \citep{Cheng2012N}\\
+%Correlations between pairs of regions using a variety of structural measures \citep{Irimia2012N}\\
+
 
 \textbf{Novel contributions}
 \begin{enumerate}
