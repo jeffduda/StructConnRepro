@@ -30,7 +30,7 @@ my $ants = "/home/avants/bin/ants/";
 my $mni = "${base}/data/MNI/MNI152_T1_1mm.nii.gz";
 my $template = "${base}/data/MMRR-21_template/MMRR-21_head_template.nii.gz";
 
-my $regCall = "${ants}antsRegistration -d 3 -u 1 -w [0.01,0.99] -r [ $template, $mni, useCenterOfMass ] -o [ ${base}/data/AAL/ch2, ${base}/data/MNI/MNI_warped.nii.gz ] -m MI[${template},${mni},1,32,Regular,0.25] -c [1000x500x250x100,1e-8,10] -t Affine[0.1] -f 8x4x2x1 -s 3x2x1x0 -m CC[${template},${mni},1,4,Regular,0.25] -c [100x100x70x20,1e-8,10] -t SyN[0.1,3,0] -f 8x4x2x1 -s 3x2x1x0";
+my $regCall = "${ants}antsRegistration -d 3 -u 1 -w [0.01,0.99] -r [ $template, $mni, useCenterOfMass ] -o [ ${base}/data/MNI/MNI, ${base}/data/MNI/MNI_warped.nii.gz ] -m MI[${template},${mni},1,32,Regular,0.25] -c [1000x500x250x100,1e-8,10] -t Affine[0.1] -f 8x4x2x1 -s 3x2x1x0 -m CC[${template},${mni},1,4,Regular,0.25] -c [100x100x70x20,1e-8,10] -t SyN[0.1,3,0] -f 8x4x2x1 -s 3x2x1x0";
 #print("$regCall \n");
 system($regCall);
 
