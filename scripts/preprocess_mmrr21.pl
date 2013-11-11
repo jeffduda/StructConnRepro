@@ -51,18 +51,25 @@ foreach my $sub (@subs) {
     my $timeID =  $timepath[scalar(@timepath)-1];
 
     my $outdir = "${base}/data/MMRR-21_processed/$subID/$timeID";
+
     mkdir "$outdir";
     my $name = "${subID}_${timeID}_";
 
     # Job file can not start with a number
     my $jobname = "${outdir}/SCR_${name}preprocess.sh";
     open(PREPROCESS,">${jobname}") or die "Can't write preprocess script";
+
+
     
     # Only do these steps for data that is manually labeled
     my $labels = "${subdir}/KKI2009-${timeID}-labels.DKT25.manual.nii.gz";
+    my $labels2 = "${subdir}/KKI2009-${timeID}-labels.DKT31.manual.nii.gz";
     my $outlabels = "${outdir}/${name}labels.DKT25.nii.gz";
+    my $outlabels2 = "${outdir}/${name}labels.DKT31.nii.gz";
     my $mask = "${outdir}/${name}brainmask.nii.gz";
     my $brain = "${subdir}/KKI2009-${timeID}-t1weighted_brain.nii.gz";
+    my $n4brain = "${outdir}/${name}brain.nii.gz";
+
     if ( (! -s "$labels" ) && ( ! -s "$outlabels") ) {
       
       if ( ! -s "${outlabels}" ) {
@@ -78,12 +85,16 @@ foreach my $sub (@subs) {
       my $altTimeID =  $alttimepath[scalar(@alttimepath)-1];
       
       $labels = "${altTime}/KKI2009-${altTimeID}-labels.DKT25.manual.nii.gz";
+      $labels2 = "${altTime}/KKI2009-${altTimeID}-labels.DKT31.manual.nii.gz";
       $brain =  "${altTime}/KKI2009-${altTimeID}-t1weighted_brain.nii.gz";
 
       print( "$labels \n $brain \n" );
+
+      my $altOutdir = "${base}/data/MMRR-21_processed/$subID/${altTimeID}";
+      my $altName= "${subID}_${altTimeID}_";
       
-      my @mprage1 = glob( "${subdir}/KKI2009-${timeID}-MPRAGE.nii.gz" );
-      my @mprage2 = glob( "${altTime}/KKI2009-${altTimeID}-MPRAGE.nii.gz" );
+      my @mprage1 = glob( "${outdir}/${name}MPRAGE_N4.nii.gz" );
+      my @mprage2 = glob( "${altOutdir}/${altName}MPRAGE_N4.nii.gz" );
       
       my $fixed = $mprage1[0];
       my $moving = $mprage2[0];
@@ -95,6 +106,9 @@ foreach my $sub (@subs) {
       my $warp = "${ants}/antsApplyTransforms -d 3 -i $labels -o ${outlabels} -n NearestNeighbor -t ${outdir}/${name}intrasub0GenericAffine.mat -r $fixed \n";
       print PREPROCESS $warp;
 
+      my $warp2 = "${ants}/antsApplyTransforms -d 3 -i $labels2 -o ${outlabels2} -n NearestNeighbor -t ${outdir}/${name}intrasub0GenericAffine.mat -r $fixed \n";
+      print PREPROCESS $warp2;
+
       print PREPROCESS "${ants}/antsApplyTransforms -d 3 -i $brain -o $mask -n Linear -t ${outdir}/${name}intrasub0GenericAffine.mat -r $fixed \n";
 
       print PREPROCESS "${ants}/ThresholdImage 3 $mask $mask 1 inf \n";
@@ -104,6 +118,8 @@ foreach my $sub (@subs) {
       print PREPROCESS "${ants}/ImageMath 3 $mask GetLargestComponent $mask 3 \n";
       print PREPROCESS "${ants}/ImageMath 3 $mask G $mask 3 \n";
       print PREPROCESS "${ants}/ThresholdImage 3 $mask $mask 0.2 inf \n";
+
+      print PREPROCESS "${ants}/ImageMath 3 $n4brain m $mask ${outdir}/${name}MPRAGE_N4.nii.gz \n";
 
     }
     else {
@@ -117,16 +133,20 @@ foreach my $sub (@subs) {
         my @alttimepath = split("/", $altTime );
         my $altTimeID =  $alttimepath[scalar(@alttimepath)-1];
         $labels = "${altTime}/KKI2009-${altTimeID}-labels.DKT25.manual.nii.gz";
+        $labels2 = "${altTime}/KKI2009-${altTimeID}-labels.DKT31.manual.nii.gz";
         $brain =  "${altTime}/KKI2009-${altTimeID}-t1weighted_brain.nii.gz";
         my $ref =  "${subdir}/KKI2009-${timeID}-MPRAGE.nii.gz";
 
         print PREPROCESS "${ants}/antsApplyTransforms -d 3 -i $labels -o ${outlabels} -n NearestNeighbor -t ${outdir}/${name}intrasub0GenericAffine.mat -r $ref \n";
+
+        print PREPROCESS "${ants}/antsApplyTransforms -d 3 -i $labels2 -o ${outlabels2} -n NearestNeighbor -t ${outdir}/${name}intrasub0GenericAffine.mat -r $ref \n";
 
         print PREPROCESS "${ants}/antsApplyTransforms -d 3 -i $brain -o $mask -n Linear -t ${outdir}/${name}intrasub0GenericAffine.mat -r $ref \n";
         
       }
       else {
          print PREPROCESS "cp $labels ${outlabels} \n";
+         print PREPROCESS "cp $labesl2 ${outlabels2} \n";
          print PREPROCESS "cp $brain $mask \n";     
       }
 
@@ -137,98 +157,9 @@ foreach my $sub (@subs) {
       print PREPROCESS "${ants}/ImageMath 3 $mask GetLargestComponent $mask 3 \n";
       print PREPROCESS "${ants}/ImageMath 3 $mask G $mask 3 \n";
       print PREPROCESS "${ants}/ThresholdImage 3 $mask $mask 0.2 inf \n";
-    }
 
-    # N4 on MPRAGE
-    if ( ! -s "${outdir}/${name}MPRAGE_N4.nii.gz" ) {
-      print PREPROCESS "N4BiasFieldCorrection 3 -h 0 -i ${subdir}/KKI2009-${timeID}-MPRAGE.nii.gz -o ${outdir}/${name}MPRAGE_N4.nii.gz -s 2 -b [200] -c [20x20x20x20,0.0001] \n";
-      print PREPROCESS "${ants}/ImageMath 3 ${outdir}/${name}MPRAGE_N4.nii.gz m ${outdir}/${name}MPRAGE_N4.nii.gz ${outdir}/${name}brainmask.nii.gz \n";
-    }
+      print PREPROCESS "${ants}/ImageMath 3 $n4brain m $mask ${outdir}/${name}MPRAGE_N4.nii.gz \n";
 
-    if ( ! -s "${outdir}/${name}dt.nii.gz" ) {
-      
-      my $dti = "${subdir}/KKI2009-${timeID}-DTI.nii.gz";
-      if ( ! -s $dti ) {
-        die "Missing DTI for ${subdir}";
-      }
-      my $grads = "${subdir}/KKI2009-${timeID}-DTI.grad";
-      my $bvals = "${subdir}/KKI2009-${timeID}-DTI.b";
- 
-      my @names = split("-DTI.nii.gz", $dti);
-      my $dwi = "${outdir}/${name}DWI.nii.gz";
-      my $scheme = "${outdir}/${name}DWI.scheme";
-
-      my $dwiList = "";
-      for ( my $n = 1; $n < 34; $n++) {
-        $dwiList = $dwiList." "."${outdir}/dwi".sprintf("%04d",$n).".nii.gz";
-      }
-
-      print PREPROCESS "${camino}split4dnii -inputfile $dti -outputroot ${outdir}/dwi \n";
-      print PREPROCESS "rm ${outdir}/dwi0034.nii.gz \n";
-      print PREPROCESS "cp ${outdir}/dwi0033.nii.gz ${outdir}/${name}b0.nii.gz \n";
-      print PREPROCESS "${ants}ImageMath 4 ${outdir}/${name}DWI.nii.gz TimeSeriesAssemble 1 0 ${dwiList} \n";
-         
-      open(DATA,"<${grads}") or die "Can't open grad file";
-      my @gradlines = <DATA>;
-      close(DATA);
-      
-      open(DATA,"<${bvals}") or die "Can't open b file";
-      my @blines = <DATA>;
-      close(DATA);
-      
-      print ( "$scheme \n" );
-      open(DATA,">${scheme}") or die "Can't write scheme file";
-      print DATA "VERSION: 2\n";
-      
-      for (my $n = 0; $n < 33; $n++) {
-        my $nGrad = $gradlines[$n];
-        my $nB = $blines[$n];
-        
-        chomp($nGrad);
-        chomp($nB);
-        
-        my @gradVec = split( " ", $nGrad );
-        my $gradX = $gradVec[0];
-        my $gradY = $gradVec[1];
-        my $gradZ = -1.0 * $gradVec[2];
-        
-        print DATA $gradX." ".$gradY." ".$gradZ." ".$nB."\n";
-    }
-      
-      print PREPROCESS "${camino}/image2voxel -4dimage ${outdir}/${name}DWI.nii.gz > ${outdir}/vo.Bfloat \n";
-      print PREPROCESS "${camino}/wdtfit ${outdir}/vo.Bfloat $scheme ${outdir}/sigmaSq.img -outputdatatype float > ${outdir}/dt.Bfloat \n";
-
-      print PREPROCESS "rm ${outdir}/dwi0033.nii.gz \n";
-      
-      print PREPROCESS "${camino}/dt2nii -header ${outdir}/${name}b0.nii.gz -outputroot ${outdir}/${name} -inputfile ${outdir}/dt.Bfloat -inputdatatype float \n";
-      
-      print PREPROCESS "rm ${outdir}/dwi* ${outdir}/vo.Bfloat ${outdir}/dt.Bfloat ${outdir}/sigmaSq.img \n";    
-      
-      print PREPROCESS "${ants}/ImageMath 3 ${outdir}/${name}fa.nii.gz TensorFA ${outdir}/${name}dt.nii.gz \n";
-      print PREPROCESS "${ants}/ImageMath 3 ${outdir}/${name}rd.nii.gz TensorMeanDiffusion ${outdir}/${name}dt.nii.gz \n";
-      print PREPROCESS "${ants}/ImageMath 3 ${outdir}/${name}md.nii.gz TensorRadialDiffusion ${outdir}/${name}dt.nii.gz\n"; 
-    }
-
-
-    
-    # Align B0 to MPRAGE
-    if ( ! -s "${outdir}/${name}b0_2_MPRAGE.nii.gz" ) {
-      
-      my $dtireg = "${ants}antsRegistration -d 3 -o [ ${outdir}/${name}b0_2_MPRAGE, ${outdir}/${name}b0_2_MPRAGE.nii.gz ] -m MeanSquares[ ${outdir}/${name}MPRAGE_N4.nii.gz, ${outdir}/${name}b0.nii.gz, 1, 4, Regular, 0.3 ] -t Rigid[1] -f 4 -s 2vox --winsorize-image-intensities [0.005, 0.995] -c [20, 1.e-8, 10] --initial-moving-transform[ ${outdir}/${name}MPRAGE_N4.nii.gz, ${outdir}/${name}b0.nii.gz, useCenterOfMass] -m mi[ ${outdir}/${name}MPRAGE_N4.nii.gz, ${outdir}/${name}b0.nii.gz, 1, 32, Regular, 0.3 ] -t Affine[0.2] -f 4x2x1 -s 2x1x0vox --winsorize-image-intensities [0.005, 0.995] -c [1500x1500x0, 1.e-8, 10] -l 1 -u 1 -b 0 -z 1 \n";
-      print PREPROCESS $dtireg;
-      
-      my $dtilabels = "${ants}/antsApplyTransforms -d 3 -i ${outdir}/${name}labels.DKT25.nii.gz -o ${outdir}/${name}dti_labels.DKT25.nii.gz -n NearestNeighbor -r ${outdir}/${name}b0.nii.gz -t [ ${outdir}/${name}b0_2_MPRAGE0GenericAffine.mat, 1] \n";
-      print PREPROCESS $dtilabels;
-
-    }
-
-    if ( ! -s "${outdir}/${name}dti_labels.DKT25.nii.gz" ) {
-      print PREPROCESS "${ants}/antsApplyTransforms -d 3 -i ${outdir}/${name}labels.DKT25.nii.gz -o ${outdir}/${name}dti_labels.DKT25.nii.gz -n NearestNeighbor -r ${outdir}/${name}b0.nii.gz -t [ ${outdir}/${name}b0_2_MPRAGE0GenericAffine.mat, 1] \n";
-    }
-
-    if ( ! -s "${outdir}/${name}dti_brainmask.nii.gz" ) {
-      print PREPROCESS "${ants}/antsApplyTransforms -d 3 -i ${outdir}/${name}brainmask.nii.gz -o ${outdir}/${name}dti_brainmask.nii.gz -n Linear -r ${outdir}/${name}b0.nii.gz -t [ ${outdir}/${name}b0_2_MPRAGE0GenericAffine.mat, 1] \n";
-      print PREPROCESS "${ants}/ThresholdImage 3 ${outdir}/${name}dti_brainmask.nii.gz ${outdir}/${name}dti_brainmask.nii.gz 0.3 inf \n";
     }
 
     close(PREPROCESS);

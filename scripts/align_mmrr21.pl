@@ -66,14 +66,14 @@ foreach my $sub (@subs) {
     open(PROCESS,">${jobname}") or die "Can't write preprocess script";
 
     my $submask = "${outdir}/${name}brainmask.nii.gz";
-    my $t1 =  "${outdir}/${name}MPRAGE_N4.nii.gz";
+    my $t1 =  "${outdir}/${name}brain.nii.gz";
 
     if ( ! -s "$t1" ) {
       print("Missing required inputs for $name \n");
       exit(1);
     }
 
-    my $reg = "${ants}antsRegistration -d 3 -u 1 -w [0.01,0.99] -r [ $template, $t1, useCenterOfMass ] -x [ $mask, $submask ] -o [ ${outdir}/${name}template, ${outdir}/${name}deformed.nii.gz ] -m MI[${template},${t1},1,32,Regular,0.25] -c [1000x500x250x100,1e-8,10] -t Affine[0.1] -f 8x4x2x1 -s 3x2x1x0 -m CC[${template},${t1},1,4,Regular,0.25] -c [100x100x70x20,1e-8,10] -t SyN[0.1,3,0] -f 8x4x2x1 -s 3x2x1x0 -z 1 \n";
+    my $reg = "${ants}antsRegistration -d 3 -u 1 -w [0.01,0.99] -r [ ${template}, ${t1}, useCenterOfMass ] -x $mask -o [ ${outdir}/${name}template, ${outdir}/${name}deformed.nii.gz ] -m MI[${template},${t1},1,32,Regular,0.25] -c [1000x500x250x100,1e-8,10] -t Affine[0.1] -f 8x4x2x1 -s 3x2x1x0 -m CC[${template},${t1},1,4,Regular,0.25] -c [100x100x70x20,1e-8,10] -t SyN[0.1,3,0] -f 8x4x2x1 -s 3x2x1x0 -z 1 \n";
 
     print PROCESS $reg;
     close(PROCESS);

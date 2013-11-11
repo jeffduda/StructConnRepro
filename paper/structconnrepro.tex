@@ -8,6 +8,7 @@
 \usepackage{url}
 \usepackage{tabularx}
 \usepackage{lineno}
+\usepackage{multirow}
 \usepackage[english]{babel}
 \linenumbers
 
@@ -66,9 +67,10 @@ fiber tractography output may also influence the resulting graph
 metrics. Here we examine how these algorithm and parameter choices
 influence the reproducibility of proposed graph metrics on a publicly
 available test-retest dataset consisting of 21 healthy young
-adults. Metrics for both weighted and unweighted network summary
+adults. Network summary
 measures are examined using the intraclass correlation coefficient
-(ICC) and Bland-Altman plots. RESULTS
+(ICC), and the dice coefficient is used to examine overlap 
+of constant density subgraphs. 
 
 %A freely available data set, the Multi-Modal MRI Reproducibility Resource, will serve as the basis for this study. ANTs, based upon ITKv4, will be used for the registration and segmentation steps needed to align and label individual brains. Camino, an open-source toolkit, will be used for: DT reconstruction, fiber tracking, and the generation of structural connectivity matrices. An ITK module will be created to implement the graph analysis metrics.
 
@@ -81,24 +83,24 @@ measures are examined using the intraclass correlation coefficient
 % For Technology Reports the introduction should be succinct, with no subheadings.
 \section{Introduction}
 Combining magnetic resonance imaging (MRI) of the human brain with graph
-theory analysis has emerged as a poweful approach to studying
+theory analysis has emerged as a powerful approach to studying
 large-scale networks of both structural and functional
-connectivity. Specifically, the use of diffusion weighted MRI and
+connectivity. In the case of structural connectivity, the use of diffusion weighted MRI and
 associated fiber tractography methods provide the ability to identify
 the long-range pathways that connect cortical regions and form a
-network architecture~\citep{Basser2000,Lazar2003,Hagmann2003,Xue1999}. 
+network architecture~\citep{Basser2000,Lazar2003,Hagmann2003,Mori1999}. 
 The use of graph theoretical analysis to study
 the topology of these structural networks has increasingly been used to
-examine the structural consequences of neurological disorders \citep{Xie2012}
+examine the structural consequences of neurological disorders \citep{Xie2012,Basset2012}
 as well as the relationship between structure and function \citep{}. 
 
-Previous studies examining the reproducibily of graph-based metrics in
-functional networks have shown good levels of repoducibily in MEG
+Previous studies examining the reproducibly of graph-based metrics in
+functional networks have shown good levels of reproducibly in MEG
 \citep{Deuker2009}, fMRI using BOLD contrast
 \citep{Telesford2010,Braun2012,Schwarz2011,Liang2012,Weber2013} and
 arterial spin labeling \citep{Weber2013}. A number of studies have also examined
-reproducibily in structural networks, each focusing on various aspects
-of the complex processing pipeline that is a prerequesite for these
+reproducibly in structural networks, each focusing on various aspects
+of the complex processing pipeline that is a prerequisite for these
 measures. These have included studies of diffusion spectrum imaging
 \citep{Cammoun2012,Bassett2011N} and high angular resolution diffusion
 imaging \citep{Dennis2012}. Some studies have examined probabilistic
@@ -107,13 +109,13 @@ deterministic tractography have included the examination of
 tractography seed density \citep{Cheng2012N}, anatomic label density
 \citep{Bassett2011N}, and studies examining a variety of network
 measures \citep{Cheng2012N,Irimia2012N}. In the paper we constrain our
-analysis DTI-based deteministic fiber
-tractograpy. Within this constraint, we examine multiple algortihms
+analysis DTI-based deterministic fiber
+tractography. Within this constraint, we examine multiple algorithms
 for computing streamlines and their required parameters to examine
 their influence on the final graph metrics. A set of manually defined
 cortical parcellations \citep{Klein2012} is used along with a more common template-based
 parcellation scheme \citep{AAL}. We use freely
-availabe data and software to create a framework that facilitates future extensions
+available data and software to create a framework that facilitates future extensions
 that may examine additional aspects of the processing as well as the
 comparison to, or addition of, multiple imaging modalities. 
 
@@ -122,7 +124,7 @@ comparison to, or addition of, multiple imaging modalities.
 %Test retest of structural graph metrics via DTI \citep{Owen2013BC}\\ 
 %Test retest of structural graph metrics via DTI acquisition parameters \citep{Vaessen2010}\\
 %Test retest of soft thresholding in fMRI \citep{Schwarz2011}\\
-%Test restest of functionl graph metrics via ASL \citep{Weber2013}\\
+%Test restest of functional graph metrics via ASL \citep{Weber2013}\\
 %Test retest of structural graph metrics via DTI and DSI with multiple labeling schemes \citep{Bassett2011N}\\
 %Intra and inter subject variability of structural graph metrics via DTI for binary and weighted networks \citep{Cheng2012N}\\
 %Correlations between pairs of regions using a variety of structural measures \citep{Irimia2012N}\\
@@ -140,12 +142,96 @@ comparison to, or addition of, multiple imaging modalities.
 
 
 %\begin{methods}
-\section{Material \& Methods}
+\section{Materials \& Methods}
 % Materials and Methods: This section may be divided by subheadings. This section should contain sufficient detail so that when read in conjunction with cited references, all procedures can be repeated.
-Provide an overview of what we are examining here
+
+\subsection{Neuroimaging data}
+The Multi-Modal MRI Reproducibility Resource~\citep{Landman2011}
+provides a publicly available test-retest data set consisting of 21
+healthy control subjects (11 males). The mean
+age is 31.76 $\pm$ 9.35 with a range of [22,61]. This data set provides a
+multitude of MR image types, but here only the T1-weighted anatomical images and diffusion
+tensor images are examined.  The Mindboggle dataset provides a
+population averaged template for this data set and for one time point
+for each subject, a brain extracted image, and two sets of manually
+defined cortical labels are provided \citep{Klein2012}.
+
+\subsection{Anatomical data preprocessing}
+ANTs volumetric-based cortical thickness estimation pipeline
+
+The N4 tool was used to perform bias correction on each subject's T1
+image \citep{Tustison????}. The antsRegistration tool was used to find
+a deformable mapping between each subject's T1 and the Mindboggle
+template for later use in anatomical labeling. An intra subject affine
+registration was used to align each subject's T1 images. Thresholding
+and a morphological closing was
+used to obtain a brainmask from the brain extracted T1 images provided
+by Mindboggle. 
+
+For each subject, a set of manually defined cortical labels was
+available via Mindboggle \citep{Klein2012}. Additionally, the AAL label set
+\citep{Tzourio-Mazoyer2002} was also examined
+as it is a label set often used in both functional and structural
+studies. Here a template-based approach is used and the
+antsRegistration tool is used to find a deformable mapping to the
+Mindboggle template. These template mapping are then combined with the
+intrasubject mapping to transfer the AAL labels into the DTI space for
+each time point.
+
+\subsection{Diffusion data preprocessing}
+An affine registration was then used to align each T1
+image to it's corresponding b=0 image that was acquired as part of the
+DWI sequence. Composing these intrasubject mappings provides the
+ability to transform labels between T1 and DTI space and between time
+points for a subject.  The intra subject mappings
+are then used to warp these labels into the DTI space for each time
+point using nearest neighbor interpolation.
+
+\subsection{Fiber tractography}
+The Camino toolkit \citep{} is used to calculate diffusion tensor images via a
+weighted linear fitting \citep{Basser1994,Salvador2005}, and is also
+used to perform the deterministic tractography. The brainmasks defined
+in anatomical space are warped into DTI space and are used to restrict the
+tractography to eliminate false positives that could results from
+streamlines that leave and then reenter the brain. Fractional anisotropy (FA) images are calculated and a
+tractography seed-map is created by including all voxels with FA of at
+least 0.2.
+
+%These seed-maps are then resampled to a resolution of 0.5mm x 0.5mm x
+%0.5mm to provide a dense seeding as this has been shown to increase stability of
+%structural network metrics ~\citep{Cheng2012}. 
+
+One of the primary differences among the various approaches to
+deterministic tractograpy is the algorithm used to determine the
+direction that a streamline should proceed from a given point. Here we
+examine four different approaches:
+
+\begin{enumerate}
+\item Fiber Assignment by Continuous Tracking (FACT) - The primary
+  direction of diffusion (PDD) is followed until the streamline enters
+  a new voxel \citep{Mori1999}.
+\item Euler -  The PDD is followed for a constant step size \citep{Basser2000}.
+\item Rourth-order Runge-Kutta (RK4) - The direction of the step is determined
+ by taking and averaging a weighted series of partial steps \citep{Basser2000}.
+\item Tensor Deflection (TenD) - The entire diffusion tensor is used to deﬂect
+the estimated ﬁber trajectory \citep{Lazar2003}
+\end{enumerate}
+
+%Additionally we examine the weighting parameters used in the TEND
+%algorithm
+
+\subsection{Graph generation}
+For a given set of streamlines, the Camino toolkit is used to generate
+a connectivity matrix that records how many streamlines connect each pair of
+regions in a given set of labels. 
+
+%Additionally, we generative matrices
+%that record the average FA along all tracts that connect a given pair
+%of regions. In both cases, the matrices may be thresholded for
+%unweighted graph metrics or used as is for weighted graph metrics. 
 
 \begin{table}[!t]
-\processtable{Descriptions and references for graph metrics examined in this study.\label{Tab:01}}
+\processtable{Descriptions and references for graph metrics examined in this study.\label{tab:nodes}}
 {\begin{tabular}{lll}
 \midrule
 Node metrics & Description & Reference\\\midrule
@@ -172,9 +258,15 @@ Edge overlap & Percentage of common edges in constant density networks & \citep{
 \end{table}
 
 \subsection{Node metrics}
-For more details on the node metrics see \citep{Rubinov2010}. 
+As we are interested in whole network summary measures, we examine the mean
+over all nodes for each of the node-metrics listed in
+table \label{tab:nodes}. For more details on the node metrics see
+\citep{Rubinov2010}. An ITK module named Petiole was created to
+calculate the desired network measures from the 2D connectivity
+matrices \citep{Petiole}. This module incorporates and extends an existing implementation of a graph class \citep{NickITKJournal} and provides ITK functions for a variety of graph metrics while using the matlab-based Brain Connectivity Toolkit \citep{BCT} for algorithmic guidance. While many of these metrics inlude implementations for weighted graphs and directed graphs, here we focus on their application to unweighted, undirected graphs. 
+
 \begin{table}[!t]
-\processtable{Formulas for node metrics.\label{Tab:02}}
+\processtable{Formulas for node metrics.\label{tab:equations}}
 {\begin{tabular}{ll}
 \midrule
 Degree & $K_i = \sum_{j=1}^{n}{A_{ij}}$\\
@@ -188,62 +280,90 @@ Local efficiency & $E_{loc} = 1/N \sum_{i \in n}{E(G_i)}$\\\botrule
 \subsection{Whole-graph metrics}
 More formulas go here.
 
-\subsection{Network Similarity}
-Use these to examine methods that extract sub-networks such as rich-club and constant density networks.
+\subsection{Statistical analysis}
+Dice coefficient for overlap of graph thresholded at a constant
+density
+
+$$Dice(x,y) = \frac{ 2 \| E(x) \cap E(y) \| }{ \|E(x) \| + \| E(y) |\ }$$
+where $E(x)$ is the set of all edges in a graph, x, and edges are considered equal if they connect the same two nodes.
+
+ICC was used to compare the
+
+$$ICC = \frac{\sigma_{bs}^{2}}{\sigma_{bs}^{2} + \sigma_{ws}^{2}} $$
+
+Permutation testing
 
 %\textbf{Figure 1.}{ Enter the caption for your figure here.  Repeat as  necessary for each of your figures.}\label{fig:01}% Don't add the figures in the LaTeX files, please upload them when submitting the article. Frontiers will add the figures at the end of the provisional pdf.
-
-\subsection{Tractograpy}
-Algorithms, parameters
-
-\subsection{Matrix Derivation}
-Turning streamlines into nice N x N matrices
-
-\subsection{Neuroimaging Data}
-The Multi-Modal MRI Reproducibility Resource~\citep{Landman2011}
-provides a test-retest data set consisting of 21 subjects with two
-time points each for which T1-weighted anatomical images and diffusion
-tensor images were acquired. Other image types, not examined here,
-were also acquired making this data useful for future examinations of
-structure and function.  A population averaged template and manually
-defined cortical labels for one time point for each subject are
-available as part of the Mindboggle-101 dataset \citep{Klein2012}.
-
-\subsection{Image Analysis}
-
-\textbf{Minimal processing}
-\begin{enumerate}
-\item Intra-subject registration for label transfer
-\item B0-T1 registration
-\item DTI reconstruction
-\item MTR ?
-\end{enumerate}
-For each subject, cortical labels were manually defined on the
-T1-weighted image from a single time-point. In order to label the
-addtional time-point, we use the ANTs Toolkit to find an affine
-mapping between the T1-weighted images using the cross-correlation
-metric. The cortical labels are then mapped into the unlabeled image
-using nearest-neighbor interpolation.
-
-
-
-\textbf{Optional processing}
-\begin{enumerate}
-\item Registration to template ( for additional label sets )
-\end{enumerate}
-
-\textbf{Future processing}
-\begin{enumerate}
-\item Cortical thickness
-\item BOLD / ASL / etc
-\end{enumerate}
-
 
 %\end{methods}
 
 \section{Results}
 %Results: This section may be divided by subheadings. Footnotes should not be used and have to be transferred into the main text
 Overview of what we found
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.5\linewidth]{figures/density_plot.png} 
+\caption{Density}
+\label{fig:density}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.5\linewidth]{figures/dice_overlap_plot.png} 
+\caption{Dice}
+\label{fig:dice}
+\end{center}
+\end{figure}
+
+\begin{figure*}
+\begin{center}
+\includegraphics[width=\linewidth]{figures/path_plot.png} \\
+\includegraphics[width=\linewidth]{figures/path_icc_plot.png}
+\caption{Path}
+\label{fig:path}
+\end{center}
+\end{figure*}
+
+\begin{figure*}
+\begin{center}
+\includegraphics[width=\linewidth]{figures/clust_plot.png} \\
+\includegraphics[width=\linewidth]{figures/clust_icc_plot.png}
+\caption{Clust}
+\label{fig:clust}
+\end{center}
+\end{figure*}
+
+% FIXME - efficiency numbers are placeholders for now
+\begin{table}[!t]
+\processtable{Functional data analysis is used along with permutation
+  testing to look for pair-wise differences in graph metrics resulting from different
+  fiber tracking algorithms. Only the first time-point for each
+  subject is used. For each metric, the upper-triangular values are for p-values for
+  the AAL labels while the lower-triangular values were generated with
+  the DKT31 labelset.\label{tab:permtesting}}
+{\begin{tabular}{l | llll | llll }
+\midrule
+ & \multicolumn{4}{c}{Clustering Coefficient} &  \multicolumn{4}{c}{Characteristic Path Length} \\ \midrule
+         & Euler    & FACT     & RK4        & TenD       & Euler    & FACT     & RK4        & TenD      \\\midrule
+Euler  &            & 0.2511  & 0.6098    & 0.0374*   &            & 0.1646  & 0.3253    &  0.6984  \\
+FACT & 0.6950 &              & 0.0256*  & 0.3175     & 0.9827 &            &  0.0063*   & 0.1662     \\
+RK4   & 0.9866 & 0.7321  &               & 0.0050*   & 0.9180 & 0.5780  &                 & 0.1989   \\
+TenD & 0.1343 & 0.8699  & 0.2010    &                & 0.8914 & 0.9285  & 0.8293   &    \\ \midrule
+ & \multicolumn{4}{c}{Connected Component Size} &  \multicolumn{4}{c}{Graph Metric} \\ \midrule
+Euler  &            & 0.3471  & 0.9324    & 0.7556   &            & 0.3506  & 0.1716   &  0.7984  \\
+FACT & 0.9447 &              & 0.0468*  & 0.3025     & 0.5986 &            &  0.0344   & 0.296     \\
+RK4   & 0.9998 &  0.7610  &              & 0.4748   & 0.4270 & 0.7780  &               & 0.3064   \\
+TenD & 0.7912 & 0.8336  & 0.7269   &                & 0.9262 & 0.5958  & 0.4084   &    \\ \midrule
+\end{tabular}}{}
+ & \multicolumn{4}{c}{Global Efficiency} &  \multicolumn{4}{c}{Graph Metric} \\ \midrule
+Euler  &            & 0.4657  & 0.3318    & 0.8574   &            & 0.3506  & 0.1716   &  0.7984  \\
+FACT & 0.9869 &              & 0.0228*  & 0.5140     & 0.5986 &            &  0.0344   & 0.296     \\
+RK4   & 0.9553 &  0.9050  &              & 0.3058   & 0.4270 & 0.7780  &               & 0.3064   \\
+TenD & 0.5298 & 0.4753  & 0.8465    &                & 0.9262 & 0.5958  & 0.4084   &    \\ \midrule
+\end{tabular}}{}
+\end{table}
 
 
 %\begin{table}[!t]
@@ -273,7 +393,25 @@ Overview of what we found
 %\textbf{Figure 2.}{ Enter the caption for your figure here.  Repeat as  necessary for each of your figures.}\label{fig:02}
 
 \section{Discussion}
-% Discussion: This section may be divided by subheadings. Discussions should cover the key findings of the study: discuss any prior art related to the subject so to place the novelty of the discovery in the appropriate context; discuss the potential short-comings and limitations on their interpretations; discuss their integration into the current understanding of the problem and how this advances the current views; speculate on the future direction of the research and freely postulate theories that could be tested in the future.
+% Discussion: This section may be divided by subheadings. Discussions
+% should cover the key findings of the study: discuss any prior art
+% related to the subject so to place the novelty of the discovery in
+% the appropriate context; discuss the potential short-comings and
+% limitations on their interpretations; discuss their integration into
+% the current understanding of the problem and how this advances the
+% current views; speculate on the future direction of the research and
+% freely postulate theories that could be tested in the future.
+
+
+Other modalities, not examined here,
+were also acquired making this data useful for future examinations of
+structure and function.
+
+No smoothing of data here
+
+Other DTI scalar metrics, such as RD, or from other modalities such as MTR.
+
+Did not normalize matrices
 
 \subsection{Data Sharing}
 %Frontiers supports the policy of data sharing, and authors are advised to make freely available any materials and information described in their article, and any data relevant to the article (while not compromising confidentiality in the context of human-subject research) that may be reasonably requested by others for the purpose of academic and non-commercial research. In regards to deposition of data and data sharing through databases, Frontiers urges authors to comply with the current best practices within their discipline.
