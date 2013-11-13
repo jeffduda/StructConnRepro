@@ -2,7 +2,6 @@
 library(ggplot2)
 
 
-
 pEulerAAL <- read.csv("../data/Statistics/assort_euler_aal.csv" )
 pFactAAL  <- read.csv("../data/Statistics/assort_fact_aal.csv" )
 pRkAAL <- read.csv("../data/Statistics/assort_rk4_aal.csv" )
