@@ -22,6 +22,7 @@ maxaal <- max(d1,d2,d3,d4)
 mindkt <- min(d5,d6,d7,d8)
 maxdkt <- max(d5,d6,d7,d8)
 
+
 print( paste("AAL range",minaal,maxaal))
 print( paste("DKT range",mindkt,maxdkt))
 
