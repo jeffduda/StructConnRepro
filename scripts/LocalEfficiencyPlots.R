@@ -134,7 +134,7 @@ for ( i in c(1:ln) ) {
     icc8[i] <- picc1$ICC
   }
 }
-  
+ 
 pathiccvalues <- c(icc1,icc2,icc3,icc4,icc5,icc6,icc7,icc8)
 pathiccdata <- data.frame(ICC=pathiccvalues, Density=dens, Algorithm=as.factor(alg), ID=as.factor(id), Labels=as.factor(label) )
  
