@@ -21,10 +21,14 @@ use Cwd 'abs_path';
 my $base = abs_path(".." );
 
 # FIXME - maybe be these from ENV VARS
-#my $camino = "${base}/software/camino/bin/";
-my $camino = "/home/jtduda/pkg/camino/bin/";
+#my $camino = "/home/jtduda/pkg/camino/bin/";
+my $camino = $ENV{'CAMINOPATH'};
+my $camino = "${camino}/";
+
 #my $ants = "${base}/software/ANTs/ANTs-build/bin/";
-my $ants = "/home/jtduda/bin/ants/";
+my $ants = $ENV{'ANTSPATH'};
+my $ants = "${ants}/";
+
 my @extensions = (".nii.gz");
 
 mkdir "${base}/data/MMRR-21_processed";
