@@ -117,7 +117,7 @@ for ( i in c(1:ln) ) {
     picc1 <- ICCest(id,path,dat)
     icc6[i] <- picc1$ICC
   }
-  
+ 
   
 
   if ( i <= dim(v7)[2] && (var(v7[,i]) > 0.0001) ) {
