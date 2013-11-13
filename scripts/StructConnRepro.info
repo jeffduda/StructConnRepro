@@ -1,0 +1,25 @@
+StructConnRepro.info
+# commands should be run from the scripts directory
+
+# to download the kirby data set and create a directory
+# organized by subid/timepoint/
+perl initialize_data.pl
+
+# to preproces the T1
+perl preprocess_t1_mmrr21.pl
+
+# To align MPRAGE images within a subject
+perl intrasub_mmrr21.pl
+
+# reconstruct DT and align to T1
+perl preprocess_dt_mmrr21.pl
+
+# Tranform AAL Labels into Kirby template space
+perl aal_labeling.pl
+
+# get final labels into DTI space
+perl label_mmrr21.pl
+
+# run fiber tracking
+perl deterministic_mmrr21.pl
+
