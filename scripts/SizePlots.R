@@ -81,7 +81,7 @@ for ( i in c(1:ln) ) {
     picc1 <- ICCest(id,path,dat)
     icc1[i] <- picc1$ICC
   }
-    
+
   if ( (i <= dim(v2)[2]) && (var(v2[,i]) > minvar) ) {
     dat <- data.frame(path=v2[,i],id=ids)
     picc1 <- ICCest(id,path,dat)
