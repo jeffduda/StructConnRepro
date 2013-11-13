@@ -48,7 +48,6 @@ print( "make new plot" )
 png( filename="../data/Statistics/richclub_plot.png", width=1000, height=300 )
 print(rcplot)
 dev.off()
-
 ln <- length(m1)
 
 icc1 <- rep(NA,ln)
