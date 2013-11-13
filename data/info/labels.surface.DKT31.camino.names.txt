@@ -1,0 +1,62 @@
+1002    L_caudal_anterior_cingulate
+1003    L_caudal_middle_frontal
+1005    L_cuneus
+1006    L_entorhinal
+1007    L_fusiform
+1008    L_inferior_parietal             220 60  220 0
+1009    L_inferior_temporal             180 40  120 0
+1010    L_isthmus_cingulate            140 20  140 0
+1011    L_lateral_occipital           20  30  140 0
+1012    L_lateral_orbitofrontal         35  75  50  0
+1013    L_lingual                      225 140 140 0
+1014    L_medial_orbitofrontal          200 35  75  0
+1015    L_middle_temporal               160 100 50  0
+1016    L_parahippocampal              20  220 60  0
+1017    L_paracentral                  60  220 60  0
+1018    L_pars_opercularis              220 180 140 0
+1019    L_pars_orbitalis                20  100 50  0
+1020    L_pars_triangularis             220 60  20  0
+1021    L_pericalcarine                120 100 60  0
+1022    L_postcentral                  220 20  20  0
+1023    L_posterior_cingulate           220 180 220 0
+1024    L_precentral                   60  20  220 0
+1025    L_precuneus                    160 140 180 0
+1026    L_rostral_anterior_cingulate     80  20  140 0
+1027    L_rostral_middle_frontal         75  50  125 0
+1028    L_superior_frontal              20  220 160 0
+1029    L_superior_parietal             20  180 140 0
+1030    L_superior_temporal             140 220 220 0
+1031    L_supramarginal                80  160 20  0
+1034    R_transverse_temporal           150 150 200 0
+1035    R_insula                       255 192 32  0
+2002    R_caudal_anterior_cingulate     125 200 160 0
+2003    R_caudal_middle_frontal          200 25  0   0
+2005    R_cuneus                       220 20  200 0
+2006    R_entorhinal                   220 20  20  0
+2007    R_fusiform                     180 220 140 0
+2008    R_inferior_parietal            220 60  220 0
+2009    R_inferior_temporal             180 40  120 0
+2010    R_isthmus_cingulate             140 20  140 0
+2011    R_lateral_occipital            20  30  140 0
+2012    R_lateral_orbitofrontal         35  75  50  0
+2013    R_lingual                225 140 140 0
+2014    R_medial_orbitofrontal         200 35  75  0
+2015    R_middle_temporal            160 200 50  0
+2016    R_parahippocampal            20  220 60  0
+2017    R_paracentral                  60  220 60  0
+2018    R_pars_opercularis              220 180 140 0
+2019    R_pars_orbitalis                20  200 50  0
+2020    R_pars_triangularis             220 60  20  0
+2021    R_pericalcarine                120 200 60  0
+2022    R_postcentral                  220 20  20  0
+2023    R_posterior_cingulate           220 180 220 0
+2024    R_precentral                   60  20  220 0
+2025    R_precuneus                    160 140 180 0
+2026    R_rostral_anterior_cingulate     80  20  140 0
+2027    R_rostral_middle_frontal         75  50  125 0
+2028    R_superior_frontal              20  220 160 0
+2029    R_superior_parietal             20  180 140 0
+2030    R_superior_temporal             140 220 220 0
+2031    R_supramarginal                80  160 20  0
+2034    R_transverse_temporal           150 150 200 0
+2035    R_insula                       255 192 32  0
