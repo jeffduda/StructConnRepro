@@ -186,7 +186,17 @@ correction using the N4 algorithm. Next a registration based skull stripping is 
 a cerebrum mask of the T1 image. This is followed by a final cerebrum-only registration to the template.
 Composing the appropriate transforms again provides a method to transfer these labels in the DTI space for each time point. 
 As the AAL labels include both gray and white matter, they are masked to only include voxels 
-that have been identified as cortical gray matter by the DKT31 labels.
+that have been identified as cortical gray matter by the DKT31 labels. This process, along with the
+entire processign scheme, is illustrated in figure \ref{fig:scheme}.
+
+\begin{figure*}
+\begin{center}
+\includegraphics[width=\linewidth]{figures/flow.png} 
+\caption{Schematic of the network processing scheme. Image registration is used to find transformations between the T1 image and: the T1 image for that subject's other time point; the population template; the b=0 image acquired as part of the DTI acquisition. Labels are transformed into the DTI space where fiber tractography is performed. A matrix is created that records the number of streamline connecting each pair of labeled regions. This matrix is thresholded as constant density to create an adjacency matrix which defines connections in a brain graph. Graph curves are generate by calculating network summary meaures over a range of density values and ICC plots are used to examine the reproducibilty of the metrics.}
+\label{fig:scheme}
+\end{center}
+\end{figure*}
+
 
 %ANTs volumetric-based cortical thickness estimation pipeline
 
@@ -344,7 +354,7 @@ Graph curves are used to examine the reproducibly of the graph metrics as a func
 $$ICC = \frac{\sigma_{bs}^{2}}{\sigma_{bs}^{2} + \sigma_{ws}^{2}} $$
 where $\sigma_{bs}^{2}$ is the between-subject variance and $\sigma_{ws}^{2}$ is the within subject variance. The 'ICC' package for  \R{} is used for this calculation. The ICC is plotted along with the mean graph metrics for each combination of algorithm and label set. At points where little to no variance exists in a graph metric, the ICC is not calculated as it becomes unstable under those conditions. The following guidelines may be used to interpret ICC values: ICC $<$ 0.2 'poor agreement'; 0.21 - 0.40 'fair agreement'; 0.41-0.60 moderate agreement; 0.61-0.80 'strong agreement'; ICC $>$ 0.8 'near perfect agrement \citep{Telesford2010,Montgomery2002}. Dashed lines indicating the boundaries of these categories have been included on all ICC plots to aid interpretation.
 
-To identify group diferences that result from fiber tracking algorithm we incorporated methods from functional data analysis which treats each curve as a function. While there are a variety of methods for computing the difference between two curves, here we choose the simplest method, the non-parametric permutation test. We first treat each mean curve as a function and find the area between a pair of curves. We then permute group assignment of individuals used to calculate the mean curves using random sampling without replacement. We then calculate new mean curves from the randomly assigned groups and measure the area between these curves. This it performed iteratively (i=100000). We record, x, the number of times area between the mean curves from the randomly assigned groups is larger than the area between the true group mean curves. The p-value for the true group difference is then defined as $x/i$. We report these differences for between-algorithm curves as they derive from graph of equal size, but do compare curves that derive from different anatomical label sets.
+To identify group diferences that result from fiber tracking algorithm we incorporated methods from functional data analysis which treats each curve as a function. While there are a variety of methods for computing the difference between two curves, here we choose the simplest method, the non-parametric permutation test. We first treat each mean curve as a function and find the area between a pair of curves. We then permute group assignment of individuals used to calculate the mean curves using random sampling without replacement. We then calculate new mean curves from the randomly assigned groups and measure the area between these curves. This it performed iteratively (i=10000). We record, x, the number of times area between the mean curves from the randomly assigned groups is larger than the area between the true group mean curves. The p-value for the true group difference is then defined as $x/i$. We report these differences for between-algorithm curves as they derive from graph of equal size, but do compare curves that derive from different anatomical label sets.
 
 %\textbf{Figure 1.}{ Enter the caption for your figure here.  Repeat as  necessary for each of your figures.}\label{fig:01}% Don't add the figures in the LaTeX files, please upload them when submitting the article. Frontiers will add the figures at the end of the provisional pdf.
 
