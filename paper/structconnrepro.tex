@@ -151,9 +151,10 @@ healthy control subjects (11 males). The mean
 age is 31.76 $\pm$ 9.35 with a range of [22,61]. This data set provides a
 multitude of MR image types, but here only the T1-weighted anatomical images and diffusion
 tensor images are examined. The T1 images have a resolution of
-1.2x1x1mm. The diffusion images have a resolution of
-0.828125x0.828125x2.2mm. The diffusion data includes a single b=0
-volume and 34 directional diffusion weighted images acquired with b=700. 
+$1.2 \times 1.0 \times 1.0 mm$. The diffusion images have a resolution of
+$0.828125 \times 0.828125 \times 2.2mm$. The diffusion data includes a single $b=0$
+volume and 34 directional diffusion weighted images acquired with
+$b=700 s/mm^2$. 
 
 \subsection{Anatomical labeling}
 A graph consists of nodes and the edges that connect those nodes. To construct a graph from a brain, a set of anatomical labels
@@ -363,8 +364,9 @@ Dice coefficients for intra-subject similarity ranged from 0.70 to 0.81 for the 
 \begin{table*}[!t]
 \processtable{Functional data analysis is used along with permutation
   testing to look for differences in dice overlap measures between graph 
-generated from different fiber tracking algorithms. Upper triangular values
-are for the AAL labels, while lower triangular are for the DTK31 label set.\label{tab:dicep}}
+generated from different fiber tracking algorithms. Upper triangular p-values
+are for the AAL labels, while lower triangular are for the DTK31 label
+set (* indicated significance).\label{tab:dicep}}
 {
 \begin{tabular}{l | llll | llll }
 \midrule
@@ -417,7 +419,7 @@ E & F
   fiber tracking algorithms and label sets. Only the first time-point for each
   subject is used. For each metric, the upper-triangular values are for p-values for
   the AAL labels while the lower-triangular values were generated with
-  the DKT31 label set.\label{tab:permtesting}}
+  the DKT31 label set (* indicated significance).\label{tab:permtesting}}
 {\begin{tabular}{l | llll | llll }
 \midrule
  & \multicolumn{4}{c}{Clustering Coefficient} &  \multicolumn{4}{c}{Characteristic Path Length} \\ 
@@ -466,8 +468,9 @@ comparisons. The p-values for all comparisons are listed in table \ref{tab:richp
 \begin{table*}[!t]
 \processtable{Functional data analysis is used along with permutation
   testing to look for differences in rich club coefficients  
-generated from different fiber tracking algorithms. Upper triangular values
-are for the AAL labels, while lower triangular are for the DTK31 label set.\label{tab:richp}}
+generated from different fiber tracking algorithms. Upper triangular p-values
+are for the AAL labels, while lower triangular are for the DTK31 label
+set  (* indicated significance).\label{tab:richp}}
 {
 \begin{tabular}{l | llll }
 \midrule
