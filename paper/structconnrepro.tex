@@ -144,12 +144,16 @@ comparison to, or addition of, multiple imaging modalities.
 % Materials and Methods: This section may be divided by subheadings. This section should contain sufficient detail so that when read in conjunction with cited references, all procedures can be repeated.
 
 \subsection{Neuroimaging data}
-The Multi-Modal MRI Reproducibility Resource \citep{Landman2011}, informally known as the Kirby dataset, 
+The Multi-Modal MRI Reproducibility Resource \citep{Landman2011},
+informally known as the Kirby dataset (\url{http://www.nitrc.org/projects/multimodal}), 
 provides a publicly available test-retest data set consisting of 21
 healthy control subjects (11 males). The mean
 age is 31.76 $\pm$ 9.35 with a range of [22,61]. This data set provides a
 multitude of MR image types, but here only the T1-weighted anatomical images and diffusion
-tensor images are examined.
+tensor images are examined. The T1 images have a resolution of
+1.2x1x1mm. The diffusion images have a resolution of
+0.828125x0.828125x2.2mm. The diffusion data includes a single b=0
+volume and 34 directional diffusion weighted images acquired with b=700. 
 
 \subsection{Anatomical labeling}
 A graph consists of nodes and the edges that connect those nodes. To construct a graph from a brain, a set of anatomical labels
@@ -158,22 +162,21 @@ reproducibility we used of the Mindboggle dataset which provides a set of manual
 along with a skull-stripped image for a single time point for each subject in the Kirby data set \citep{Klein2012}. 
 To utilize these labels in network creation we performed an intra subject registration between each subject's two T1 images. 
 A brain mask was created from the provided skull-stripped T1 image by thresholding and a morphological closing. This mask
-was into the unlabeled T1 image space and used to create a skull-stripped image. For each time, a transformation was found
-between the skull-stripped T1 image and the b=0 image, acquired as part of the DTI acquisition. By composing the transforms, 
-the manually defined labels were propagated into the DTI space for both time points in all subjects. 
+was warped into the unlabeled T1 image space and used to create a skull-stripped image. For each time, a transformation was found
+between the skull-stripped T1 image and the b=0 image, acquired as part of the DTI acquisition. In all subjects, the manually defined
+labels were propagated into the DTI space for both time points using the appropriate composed transform. 
 
 One of the most common label sets used in studies of both functional and structural
 connectivity is the AAL label set \citep{Tzourio-Mazoyer2002} which is a template based label set. An existing multivariate template had 
-been created from the Kirby dataset using the \texttt{antsMultivariateTemplateConsturction.sh} tool, part of the 
+been created from the Kirby dataset using the \texttt{antsMultivariateTemplateConstruction.sh} tool, part of the 
 Advanced Normalization Tools (ANTs) software package \citep{ANTS}. The \texttt{antsRegistration} tool was used to find
 a deformable mapping between the T1 template image distributed with the AAL label and the population specific template
 created from the Kirby data.  In order to transform these labels into each 
 subject's DTI space, it was necessary to find a transform from the template to each subject's T1 and from T1 to DTI within 
 each subject. For the template-to-T1 transform, the \texttt{antsCorticalThickness.sh} tool was used. This software first applied a bias
 correction using the N4 algorithm \citep{Tustison2010}. Next a registration based skull stripping was performed to provide
-a cerebrum mask of the T1 image. This was followed by a final cerebrum-only registration to the template. By composing these
-transforms, along with the T1-to-DTI transforms, the AAL labels were
-warped into DTI space using nearest neighbor interpolation. Labels of structures outside of the cerebrum were removed.
+a cerebrum mask of the T1 image. This was followed by a final cerebrum-only registration to the template. These transforms were
+composed with the T1-to-DTI transforms, providing a single transform that was used to warp the the AAL labels into DTI space using nearest neighbor interpolation. Labels of structures outside of the cerebrum were removed.
 Many AAL labels include both gray and white matter, here the labels were masked to only include voxels 
 that were identified as cortical gray matter by the DKT31 labels described in the previous section. 
 The AAL labels for deep gray structures (e.g.\ thalamus) were not masked but used in their entirety. Both label set are illustrated
@@ -283,7 +286,10 @@ where $K_i$ is the set of all nodes that share an edge with $i$ and $e_i$ is the
 $$L = \frac{1}{\|N(G)\|(\|N(G)\|-1)} \sum_{ij \in G, i \neq j}{L_{ij}}$$
 This measure is only defined for fully connected graphs. Here, we apply the density thresholding first and then extract the largest connected component in order to calculate the characteristic path length.
 
-\emph{Global Efficiency}. This measure is related to the characteristic path length, in that it attempts to quantify the mean efficiency between any two nodes in the graph. Unlike the characteristic path length, this metric is defined for both connected unconnected graphs \citep{Latora2001}.
+\emph{Global Efficiency}. This measure is related to the
+characteristic path length, in that it attempts to quantify the mean
+efficiency between any two nodes in the graph. Unlike the
+characteristic path length, this metric is defined for both connected and unconnected graphs \citep{Latora2001}.
 $$F_{glob} = \frac{1}{\|N(G)\|(\|N(G)\|-1)} \sum_{i \neq j \in G}{1/L_{ij}}$$
 
 \emph{Local Efficiency}. This metric relates to fault tolerance and examines efficiency between neighbors on a node $i$, if that node were removed from the graph \citep{Latora2001}.
@@ -302,11 +308,13 @@ The metrics listed above are all applied to thresholded binary graphs. As discus
 \subsection{Statistical analysis}
 Before examining how the graph metrics change with density it is necessary to examine the maximum density of the graphs to determine the range over which graphs may be compared. Additionally, it is interesting to examine the topological similarity in the thresholded graphs. This is done using the dice coefficient which measures similarity between two graphs as:
 $$Dice(x,y) = \frac{ 2 \| E(x) \cap E(y) \| }{ \|E(x) \| + \| E(y) |\ }$$
-where edges are considered equal if they connect the same two nodes. The mean intra- and inter-subject topological similarity 
+where edges are considered equal if they connect the same two
+nodes. This is equivalent to treating each connectivity matrix as
+a binarized 2D image and using the Dice metric to measure overlap. The mean intra- and inter-subject topological similarity 
 was computed over a range of densities for each combination of tracking algorithm and anatomical label sets. This allows us to 
 examine the reproducibility of within-subject topography compared to between subject topography. This metric is limited to lie in the range $[0,1]$ and can be interpreted as a measure of degree of overlap between graphs. This provides a stricter metric than measuring overlap between sets of nodes as complete node-overlap is a necessary but incomplete condition for complete edge-overlap.
 
-Graph curves are used to examine the reproducibly of the graph metrics as a function of an independent parameter, typically graph density. At each point along the curve, reproducibility of the metric is quantified using the ICC:
+Graph curves are used to examine the reproducibility of the graph metrics as a function of an independent parameter, typically graph density. At each point along the curve, reproducibility of the metric is quantified using the ICC:
 $$ICC = \frac{\sigma_{bs}^{2}}{\sigma_{bs}^{2} + \sigma_{ws}^{2}} $$
 where $\sigma_{bs}^{2}$ is the between-subject variance and $\sigma_{ws}^{2}$ is the within subject variance. The 'ICC' package for  \R{} is used for this calculation. The ICC is plotted along with the mean graph metrics for each combination of algorithm and label set. At points where little to no variance exists in a graph metric, the ICC is not calculated as it becomes unstable under those conditions. The following guidelines may be used to interpret ICC values: ICC $<$ 0.2 'poor agreement'; 0.21 - 0.40 'fair agreement'; 0.41-0.60 moderate agreement; 0.61-0.80 'strong agreement'; ICC $>$ 0.8 'near perfect agrement \citep{Telesford2010,Montgomery2002}. Dashed lines indicating the boundaries of these categories have been included on all ICC plots to aid interpretation.
 
