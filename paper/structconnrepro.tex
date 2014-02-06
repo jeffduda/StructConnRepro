@@ -151,7 +151,7 @@ healthy control subjects (11 males). The mean
 age is 31.76 $\pm$ 9.35 with a range of [22,61]. This data set provides a
 multitude of MR image types, but here only the T1-weighted anatomical images and diffusion
 tensor images are examined. The T1 images have a resolution of
-$1.2 \times 1.0 \times 1.0 mm$. The diffusion images have a resolution of
+$1.2 \times 1.0 \times 1.0 mm$. The distributed diffusion images have a resolution of
 $0.828125 \times 0.828125 \times 2.2mm$. The diffusion data includes a single $b=0$
 volume and 34 directional diffusion weighted images acquired with
 $b=700 s/mm^2$. 
@@ -180,30 +180,55 @@ a cerebrum mask of the T1 image. This was followed by a final cerebrum-only regi
 composed with the T1-to-DTI transforms, providing a single transform that was used to warp the the AAL labels into DTI space using nearest neighbor interpolation. Labels of structures outside of the cerebrum were removed.
 Many AAL labels include both gray and white matter, here the labels were masked to only include voxels 
 that were identified as cortical gray matter by the DKT31 labels described in the previous section. 
-The AAL labels for deep gray structures (e.g.\ thalamus) were not masked but used in their entirety. Both label set are illustrated
-in figure \ref{fig:labels}, while the entire processing scheme is illustrated in figure \ref{fig:scheme}.
+The AAL labels for deep gray structures (e.g.\ thalamus) were not masked but used in their entirety. Both label sets are illustrated
+in figure \ref{fig:labels}, while the entire processing scheme is
+illustrated in figure \ref{fig:scheme}. The availability of the
+processing scripts is intended to provide a framework that allows for
+convenient exploration of alternate anatomical labels, such as the
+anatomical parcellations that may be obtained via FreeSurfer
+(\url{http://surfer.nmr.mgh.harvard.edu}) or the UCLA Multimodal
+Connectivity Package
+(\url{http://ccn.ucla.edu/wiki/index.php/UCLA_Multimodal_Connectivity_Package}),
+both of which have been used in previous graph-theory based examinations of structural connectivity based on diffusion-weighted imaging.
 
 \begin{figure*}
 \begin{center}
 \renewcommand{\tabcolsep}{0pt}
 \renewcommand\arraystretch{0}
 \begin{tabular}{ccccccc}
-\includegraphics[width=0.14\linewidth]{figures/aal120.png} & 
-\includegraphics[width=0.14\linewidth]{figures/aal130.png} & 
-\includegraphics[width=0.14\linewidth]{figures/aal140.png} & 
-\includegraphics[width=0.14\linewidth]{figures/aal150.png} & 
-\includegraphics[width=0.14\linewidth]{figures/aal160.png} & 
-\includegraphics[width=0.14\linewidth]{figures/aal170.png} & 
-\includegraphics[width=0.14\linewidth]{figures/aal180.png} \\
-\includegraphics[width=0.14\linewidth]{figures/dkt120.png} & 
-\includegraphics[width=0.14\linewidth]{figures/dkt130.png} & 
-\includegraphics[width=0.14\linewidth]{figures/dkt140.png} & 
-\includegraphics[width=0.14\linewidth]{figures/dkt150.png} & 
-\includegraphics[width=0.14\linewidth]{figures/dkt160.png} & 
-\includegraphics[width=0.14\linewidth]{figures/dkt170.png} & 
-\includegraphics[width=0.14\linewidth]{figures/dkt180.png}
+%\includegraphics[width=0.14\linewidth]{figures/aal120.png} & 
+%\includegraphics[width=0.14\linewidth]{figures/aal130.png} & 
+%\includegraphics[width=0.14\linewidth]{figures/aal140.png} & 
+%\includegraphics[width=0.14\linewidth]{figures/aal150.png} & 
+%\includegraphics[width=0.14\linewidth]{figures/aal160.png} & 
+%\includegraphics[width=0.14\linewidth]{figures/aal170.png} & 
+%\includegraphics[width=0.14\linewidth]{figures/aal180.png} \\
+%\includegraphics[width=0.14\linewidth]{figures/dkt120.png} & 
+%\includegraphics[width=0.14\linewidth]{figures/dkt130.png} & 
+%\includegraphics[width=0.14\linewidth]{figures/dkt140.png} & 
+%\includegraphics[width=0.14\linewidth]{figures/dkt150.png} & 
+%\includegraphics[width=0.14\linewidth]{figures/dkt160.png} & 
+%\includegraphics[width=0.14\linewidth]{figures/dkt170.png} & 
+%\includegraphics[width=0.14\linewidth]{figures/dkt180.png}
+\includegraphics[width=0.14\linewidth]{figures/aal_125_masked.png} & 
+\includegraphics[width=0.14\linewidth]{figures/aal_135_masked.png} & 
+\includegraphics[width=0.14\linewidth]{figures/aal_145_masked.png} & 
+\includegraphics[width=0.14\linewidth]{figures/aal_155_masked.png} & 
+\includegraphics[width=0.14\linewidth]{figures/aal_165_masked.png} & 
+\includegraphics[width=0.14\linewidth]{figures/aal_175_masked.png} & 
+\includegraphics[width=0.14\linewidth]{figures/aal_185_masked.png} \\
+\includegraphics[width=0.14\linewidth]{figures/dkt_125_masked.png} & 
+\includegraphics[width=0.14\linewidth]{figures/dkt_135_masked.png} & 
+\includegraphics[width=0.14\linewidth]{figures/dkt_145_masked.png} & 
+\includegraphics[width=0.14\linewidth]{figures/dkt_155_masked.png} & 
+\includegraphics[width=0.14\linewidth]{figures/dkt_165_masked.png} & 
+\includegraphics[width=0.14\linewidth]{figures/dkt_175_masked.png} & 
+\includegraphics[width=0.14\linewidth]{figures/dkt_185_masked.png}
 \end{tabular}
-\caption{Two sets of anatomical labels are used to define the networks. The template based AAL labels (top) and The DKT31 manually defied labels that are provided via Mindboggle (bottom). }
+\caption{Two sets of anatomical labels are used to define the
+  networks. The template based AAL labels (top) and The DKT31 manually
+  defied labels that are provided via Mindboggle (bottom). The AAL
+  labels have been masked to only include gray matter}
 \label{fig:labels}
 \end{center}
 \end{figure*}
@@ -250,6 +275,14 @@ Shared parameters used in the fiber tracking were held constant as follows
 \item A step size of 0.5mm was used. 
 \item Linear interpolation of the primary direction of diffusion was used for Euler and RK4. 
 \end{enumerate}
+
+The script used to generate these streamlines,
+\texttt{deterministic\textunderscore mmrr21.pl}, is available as part of the git
+repository that contains all of the processing scripts for the work
+presented here (\url{https://github.com/jeffduda/StructConnRepro}). Relatively small
+changes to this script would allows users to explore additional
+deterministic tractograpy methods as well as probabilistic methods
+which are also available in the Camino toolkit.
 
 %Additionally we examine the weighting parameters used in the TEND
 %algorithm
@@ -385,7 +418,10 @@ TEND & 0.3952 & 0.6655  & 0.7564    &            &    0.0001*  & 0.0003* & 0.083
 
 \subsection{Network summary measures over graph density}
 For each combination of tracking and label set, the mean curves that were calculated to examine how the metrics change as a 
-function of graph density are illustrated in figure \ref{fig:vsdensity} along with the ICC curves that quantify reproducibility. 
+function of graph density are illustrated in figure
+\ref{fig:vsdensity} along with the ICC curves that quantify
+reproducibility. In some cases, ICC values may not be calculate due to
+insufficient variation in the metric.
 Only the characteristic path length curves exhibit a different shape between label sets, and
 only at low density values. This is likely a results of the smaller number of regions in DKT31 label set. Clustering coefficient, and
 global and local efficiency exhibit the most similarity across label sets. Comparing within metric and within label set, the fiber tracking
@@ -576,6 +612,19 @@ limited the analysis to a set of manually defined labels, and a often used set o
 'as-is' without upsampling to a higher number of regions. This may reduce the reproducibility of the networks, but provides
 more interpretable results if one wishes to examine individual connections or a subset of connections (e.g.\ default mode network)
 since the labels have well defined anatomical associations.
+
+The use of a data with relatively low angular resolution and the use
+of the diffusion tensor model are both limiting factors in the work presented
+here. To some degree, the choice of diffusion model is limited by the
+data used here. However, these limitations are representative of a
+great deal of existing data sets. Thus, the work presented here
+provides insight into the utility of using this data to examine
+network-wide structural connectivity properties. Additionally this
+work provides a baseline analysis. This allows methods using more sophisticated
+techniques, such as diffusion spectrum imaging and it's associated
+models, to demonstrate the added value of those methods. Without this
+baseline, the added benefit of these more complex techniques is less
+clear due to a lack of sufficient context.
 
 An additional limitation of this work is the use of streamline count matrices as the basis for thresholding to create constant
 density graphs. Multiple options exist for normalizing the streamline count matrices using the volumes of 
