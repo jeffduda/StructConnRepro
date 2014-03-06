@@ -276,13 +276,33 @@ Shared parameters used in the fiber tracking were held constant as follows
 \item Linear interpolation of the primary direction of diffusion was used for Euler and RK4. 
 \end{enumerate}
 
-The script used to generate these streamlines,
+Figure \ref{fig:tracts} illustates the fiber tracts for all methods for a single subject. The script used to generate these streamlines,
 \texttt{deterministic\textunderscore mmrr21.pl}, is available as part of the git
 repository that contains all of the processing scripts for the work
 presented here (\url{https://github.com/jeffduda/StructConnRepro}). Relatively small
 changes to this script would allows users to explore additional
 deterministic tractograpy methods as well as probabilistic methods
 which are also available in the Camino toolkit.
+
+\begin{figure*}
+\begin{center}
+\renewcommand{\tabcolsep}{0pt}
+\renewcommand\arraystretch{0}
+\begin{tabular}{ccccccc}
+FACT & Euler & RK4 & TenD \\
+\includegraphics[width=0.25\linewidth]{figures/113_30_fact.png} & 
+\includegraphics[width=0.25\linewidth]{figures/113_30_euler.png} & 
+\includegraphics[width=0.25\linewidth]{figures/113_30_rk4.png} & 
+\includegraphics[width=0.25\linewidth]{figures/113_30_tend.png} \\
+\includegraphics[width=0.25\linewidth]{figures/113_33_fact.png} & 
+\includegraphics[width=0.25\linewidth]{figures/113_33_euler.png} & 
+\includegraphics[width=0.25\linewidth]{figures/113_33_rk4.png} & 
+\includegraphics[width=0.25\linewidth]{figures/113_33_tend.png} \\
+\end{tabular}
+\caption{Fiber tracts generated using each method are illustrated for both time points in a single subjects. For visualization, tract sets are sampled to display 5\% of the tracts at 25\% opacity. Tract points are colored to illustrate local streamline direction.}
+\label{fig:tracts}
+\end{center}
+\end{figure*}
 
 %Additionally we examine the weighting parameters used in the TEND
 %algorithm
@@ -361,7 +381,14 @@ To identify group diferences that result from fiber tracking algorithm we incorp
 \section{Results}
 %Results: This section may be divided by subheadings. Footnotes should not be used and have to be transferred into the main text
 \subsection{Network density}
-Maximal densities for connectivity matrices across all tracking algorithm ranged from 0.17 to 0.30 for the AAL labels and from 0.20 to 0.41 for DKT31. Maximal densities in the DTK31 data was generally higher than in the AAL as illustrated in figure \ref{fig:density}. Both label sets had the same lowest-to-highest ordering of mean maximal density within algorithms: RK4 $<$ Euler $<$ FACT $<$ TEND.
+Maximal densities for connectivity matrices across all tracking
+algorithm ranged from 0.17 to 0.30 for the AAL labels and from 0.20 to
+0.41 for DKT31. Maximal densities in the DTK31 data was generally
+higher than in the AAL as illustrated in figure
+\ref{fig:density}. Both label sets had the same lowest-to-highest
+ordering of mean maximal density within algorithms: RK4 $<$ Euler $<$
+FACT $<$ TEND.
+
 
 \begin{figure}
 \begin{center}
@@ -372,7 +399,17 @@ Maximal densities for connectivity matrices across all tracking algorithm ranged
 \end{figure}
 
 \subsection{Network topology}
-Dice coefficients for intra-subject similarity ranged from 0.70 to 0.81 for the AAL labels and from 0.59 to 0.82 for the DTK31 labels. Inter-subject similarity ranged from 0.51 to 0.71 for AAL labels and from 0.32 to 0.71 for the DTK31 labels. For all algorithm-label pairings, intra-subject overlap was greater than inter-subject overlap across the range of densities as illustrated in figure \ref{fig:dice}. Permutation testing of intra-subject dice vs. density curves did not reveal any significant differences between algorithms for either label set. However, a number of differences were found in the inter-subject comparions. The resulting p-values are listed in table \ref{tab:dicep}.
+Dice coefficients for intra-subject similarity ranged from 0.70 to
+0.81 for the AAL labels and from 0.59 to 0.82 for the DTK31
+labels. Inter-subject similarity ranged from 0.51 to 0.71 for AAL
+labels and from 0.32 to 0.71 for the DTK31 labels. For all
+algorithm-label pairings, intra-subject overlap was greater than
+inter-subject overlap across the range of densities as illustrated in
+figure \ref{fig:dice}. Permutation testing of intra-subject dice
+vs. density curves did not reveal any significant differences between
+algorithms for either label set. However, a number of differences were
+found in the inter-subject comparions. The resulting p-values are
+listed in table \ref{tab:dicep}. 
 
 \begin{figure}
 \begin{center}
@@ -488,7 +525,7 @@ TEND & 0.9977 & 0.9633  & 0.7438    &                & 0.8752 & 0.7987  & 0.4775
 Because the rich club coefficient requires the selection of multiple parameters, we chose to examine how this metric
 changes as a function of $k$, the node degree that determines what is considered a 'rich' node. The plots for the
 mean graph curves and ICC coefficients are illustrated in figure \ref{fig:richclub}. The results are similar to the examinations
-over graph density in that the same shape appears for both label sets, but with an scaling difference and the tracking algorithms
+over graph density in that the same shape appears for both label sets, but with a scaling difference and the tracking algorithms
 have similar shapes but within the AAL networks, differences were found in the RK4-FACT (p$=$0.0338) and RK4-TEND (p$=$0.0252) 
 comparisons. The p-values for all comparisons are listed in table \ref{tab:richp}
 
