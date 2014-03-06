@@ -45,15 +45,28 @@ for ( my $i = 1; $i <= 42; $i++) {
 if ( ! -d "../data/MMRR-21_subjects" ) {
 
   system( "mkdir ../data/MMRR-21_subjects" );
-  if ( DownloadLinks( @kirbyurls ) ) {
-    exit 1;
-  }
-  foreach my $file ( @kirbynames ) {
-    system( "mkdir ../data/MMRR-21_subjects/$file" );
-    system( "tar jxf ${file}.tar.bz2" );
-    system( "rm ${file}.tar.bz2" );
-    system( "mv ${file}* ../data/MMRR-21_subjects/${file}/." );
-    system( "gzip ../data/MMRR-21_subjects/${file}/*.nii" );
+  #if ( DownloadLinks( @kirbyurls ) ) {
+  #  exit 1;
+  #}
+  #foreach my $file ( @kirbynames ) {
+  for ( my $idx = 0; $idx < scalar(@kirbynames); $idx++ ) {
+    my $name = $kirbynames[$idx];
+    my $link = $kirbyurls[$idx];
+    my $file = "${name}.tar.bz2";
+
+    print( "=========== GETTING: $file ===========\n");
+
+    DownloadLinks( $link );
+    if ( ! -s "$file" ) {
+      print( "Failed to download $file \n" );
+    }
+    else {
+      system( "mkdir ../data/MMRR-21_subjects/${name}" );
+      system( "tar jxf ${file}" );
+      system( "rm ${file}" );
+      system( "mv ${name}* ../data/MMRR-21_subjects/${name}/." );
+      system( "gzip ../data/MMRR-21_subjects/${name}/*.nii" );
+    }
   }  
 }
 
@@ -70,7 +83,7 @@ if ( ! -d "../data/MMRR-21_template" ) {
   if ( DownloadFiles( $mindbogglereadmeurl ) ) {
     exit 1;
   }
-  my @mindbogglelabelurl = "http://www.mindboggle.info/data/labels.surface.DKT31.fullnames.txt";
+  my $mindbogglelabelurl = "http://www.mindboggle.info/data/labels.surface.DKT31.fullnames.txt";
   if ( DownloadFiles( $mindbogglelabelurl ) ) {
     exit 1;
   }

@@ -13,7 +13,7 @@ d7 <- read.csv("../data/Statistics/density_rk4_dkt31_dice.csv" )[,2]
 d8 <- read.csv("../data/Statistics/density_tend_dkt31_dice.csv" )[,2]
 subs <- length(d1)
 
-alg <- c(rep("Euler",subs),rep("FACT",subs),rep("RK4",subs),rep("TenD",subs))
+alg <- c(rep("Euler",subs),rep("FACT",subs),rep("RK4",subs),rep("TEND",subs))
 alg <- c(alg,alg)
 labels <- c(rep("AAL",subs*4),rep("DKT31",subs*4))
 

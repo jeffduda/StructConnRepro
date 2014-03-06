@@ -50,10 +50,11 @@ values <- c(m1,m2,m3,m4,m5,m6,m7,m8)
 
 id <- rep(c(1:8),each=ln)
 
-alg <- c(rep("Euler",ln),rep("FACT",ln),rep("RK4",ln),rep("TenD",ln),rep("Euler",ln),rep("FACT",ln),rep("RK4",ln),rep("TenD",ln))
+alg <- c(rep("Euler",ln),rep("FACT",ln),rep("RK4",ln),rep("TEND",ln),rep("Euler",ln),rep("FACT",ln),rep("RK4",ln),rep("TEND",ln))
 
 label <- c(rep("AAL",ln*4),rep("DKT31",ln*4))
 
+values <- log(values)
 data <- data.frame(ClusteringCoefficient=values, Density=dens, Algorithm=as.factor(alg), ID=as.factor(id), Labels=as.factor(label) )
 
 pathplot <- ggplot( data, aes(x=Density, y=ClusteringCoefficient, colour=Algorithm, group=ID ) ) + geom_line() + ggtitle("Clustering coefficient in constant density subgraphs") + theme(plot.title = element_text(lineheight=0.5)) + facet_grid(. ~ Labels)

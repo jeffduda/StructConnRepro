@@ -23,9 +23,11 @@ my $base = abs_path(".." );
 
 # FIXME - maybe be these from ENV VARS
 #my $camino = "${base}/software/camino/bin/";
-my $camino = "/home/jtduda/pkg/camino/bin/";
+#my $camino = "/home/jtduda/pkg/camino/bin/";
 #my $ants = "${base}/software/ANTs/ANTs-build/bin/";
-my $ants = "~/bin/";
+#my $ants = "~/bin/";
+my $ants = $ENV{'ANTSPATH'};
+$ants = "${ants}/";
 
 my $ch2 = "${base}/data/AAL/ch2.nii.gz";
 my $ch2bet =  "${base}/data/AAL/ch2bet.nii.gz";

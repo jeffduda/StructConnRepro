@@ -83,7 +83,7 @@ dice <- c(m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11,m12,m13,m14,m15,m16)
 
 id <- rep(c(1:16),each=ln)
 
-alg <- c(rep("Euler",ln),rep("FACT",ln),rep("RK4",ln),rep("TenD",ln),rep("Euler",ln),rep("FACT",ln),rep("RK4",ln),rep("TenD",ln))
+alg <- c(rep("Euler",ln),rep("FACT",ln),rep("RK4",ln),rep("TEND",ln),rep("Euler",ln),rep("FACT",ln),rep("RK4",ln),rep("TEND",ln))
 alg <- c(alg,alg)
 
 type <- c(rep("Intra-Subject",ln*4),rep("Inter-Subject",ln*4) )
