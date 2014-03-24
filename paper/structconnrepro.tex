@@ -15,6 +15,9 @@
 \linenumbers
 
 \newcommand{\R}{R}
+\newcommand{\fix}[1] { \textcolor{red} {
+{\fbox{ {\bf Fix:} \ensuremath{\blacktriangleright }} {\bf #1}
+\fbox{\ensuremath{\blacktriangleleft} } } } }
 
 \copyrightyear{}
 \pubyear{}
@@ -73,7 +76,7 @@ The dice coefficient is used to examine topological similarity
 of constant density subgraphs both within and between subjects.
 Seven graph metrics are examined here: mean clustering coefficient, 
 characteristic path length, largest connected component size, assortativity,
-global efficiency, local efficiency, and rich club coefficient. These reproducibility of
+global efficiency, local efficiency, and rich club coefficient. The reproducibility of
 these network summary
 measures is examined using the intraclass correlation coefficient
 (ICC). Graph curves are created by treating the
@@ -107,12 +110,12 @@ increasingly active topic of research \citep{Hagmann2008,Zalesky2010,Cheng2012,B
 These methods have been used to examine the structural consequences of neurological disorders \citep{Xie2012,Guye2010,Martin2012}
 as well as the relationship between structure and function \citep{Hagmann2008,Honey2009,Honey2007}. 
 
-Previous studies examining the reproducibly of graph-based metrics in
-functional networks have shown good levels of reproducibly in MEG
+Previous studies examining the reproducibility of graph-based metrics in
+functional networks have shown good levels of reproducibility in MEG
 \citep{Deuker2009}, fMRI using BOLD contrast
 \citep{Telesford2010,Braun2012,Schwarz2011,Liang2012,Weber2013} and
 arterial spin labeling \citep{Weber2013}. A number of studies have also examined
-reproducibly in structural networks, each focusing on various aspects
+reproducibility in structural networks, each focusing on various aspects
 of the complex processing pipeline that is a prerequisite for these
 measures. These have included studies of diffusion spectrum imaging
 \citep{Cammoun2012,Bassett2011N} and high angular resolution diffusion
@@ -121,10 +124,10 @@ tractography \citep{Owen2013BC,Vaessen2010}. Diffusion tensor imaging (DTI) base
 deterministic tractography have included the examination of
 tractography seed density \citep{Cheng2012N}, anatomic label density
 \citep{Bassett2011N}, and studies examining a variety of network
-measures \citep{Cheng2012N,Irimia2012N}. Further exploration of the reproducibility of
+measures \citep{Cheng2012N,Irimia2012N}. \fix{the following isn't a complete sentence}Further exploration of the reproducibility of
 these graph metrics as it relates to their utility in longitudinal studies \citep{Telesford2013}.
 
-In the paper we constrain our analysis to DTI-based deterministic fiber
+In this paper we constrain our analysis to DTI-based deterministic fiber
 tractography. Within this constraint, we examine multiple algorithms
 for computing streamlines to examine their influence on the final graph metrics. A set of manually defined
 cortical parcellations \citep{Klein2012} is used along with a more common template-based
@@ -159,7 +162,7 @@ $b=700 s/mm^2$.
 \subsection{Anatomical labeling}
 A graph consists of nodes and the edges that connect those nodes. To construct a graph from a brain, a set of anatomical labels
 are used to define the nodes of the graph. To determine if manually defined cortical labels would provide an inherent advantage in
-reproducibility we used of the Mindboggle dataset which provides a set of manually drawn cortical regions (DKT31) 
+reproducibility we used the Mindboggle dataset which provides a set of manually drawn cortical regions (DKT31) 
 along with a skull-stripped image for a single time point for each subject in the Kirby data set \citep{Klein2012}. 
 To utilize these labels in network creation we performed an intra subject registration between each subject's two T1 images. 
 A brain mask was created from the provided skull-stripped T1 image by thresholding and a morphological closing. This mask
@@ -262,7 +265,7 @@ examine four different approaches:
   direction of diffusion (PDD) is followed until the streamline enters
   a new voxel \citep{Xue1999}.
 \item Euler -  The PDD is followed for a constant step size \citep{Basser2000}.
-\item Rourth-order Runge-Kutta (RK4) - The direction of the step is determined
+\item Fourth-order Runge-Kutta (RK4) - The direction of the step is determined
  by taking and averaging a weighted series of partial steps \citep{Basser2000}.
 \item Tensor Deflection (TEND) - The local fiber trajectory is a function of the previous
 direction and the local diffusion tensor \citep{Lazar2003}
@@ -276,7 +279,7 @@ Shared parameters used in the fiber tracking were held constant as follows
 \item Linear interpolation of the primary direction of diffusion was used for Euler and RK4. 
 \end{enumerate}
 
-Figure \ref{fig:tracts} illustates the fiber tracts for all methods for a single subject. The script used to generate these streamlines,
+Figure \ref{fig:tracts} illustrates the fiber tracts for all methods for a single subject. The script used to generate these streamlines,
 \texttt{deterministic\textunderscore mmrr21.pl}, is available as part of the git
 repository that contains all of the processing scripts for the work
 presented here (\url{https://github.com/jeffduda/StructConnRepro}). Relatively small
@@ -315,7 +318,7 @@ a connectivity matrix that records how many streamlines connect each pair of
 regions in a given set of target regions. This program starts at the seed point for a streamline and proceeds outward in each
 direction to determines the two target regions encountered. Only streamlines that connect two unique regions are retained and
 a given streamline may be only be counted as connecting a single pair of target regions. Fiber tractography does not provide a measure
-of directionality (i.e.\ neither node can be considered a starting point or ending point) so the resulting matrices resulting in undirected graphs.
+of directionality (i.e.\ neither node can be considered a starting point or ending point) so the resulting matrices yield undirected graphs.
 
 Graph are often compared by first ensuring that they have the same density \citep{Achard2006,Bassett2006}, where density for an undirected graph is defined as:
 $$D(G) = \frac{\|E(G)\|}{( \|N(G)\| (\|N(G)\|-1) )} $$
@@ -323,10 +326,10 @@ where $N(G)$ is the set of all nodes in graph $G$ and $E(G)$ is the set of all e
 
 \subsection{Network metrics}
 A large number of graph metrics are available for quantifying properties of binary, undirected networks \citep{Rubinov2010}. Here we examine a number that 
-are common in current literature: largest connected component size \citep{Bassett2011N}, assortativity\citep{Newman2006a,Bassett2008}, clustering coefficient \citep{Watts1998}, characteristic path length\citep{Watts1998}, global and local efficiency \citep{Latora2001}, and rich club coefficient\citep{Collin2013}. An ITK module named Petiole (\url{https://github.com/jeffduda/Petiole}) was created to calculate these network measures from 2D connectivity
-matrices. This module incorporates and extends an existing implementation of a graph class \citep{Tustison2008} and provides ITK functions for a variety of graph metrics while using the matlab-based Brain Connectivity Toolkit \citep{Rubinov2010} for algorithmic guidance. While many of these metrics include implementations for weighted graphs and/or directed graphs, here we focus on their application to unweighted, undirected graphs. Summaries and equations for these metrics are provided here:
+are common in current literature: largest connected component size \citep{Bassett2011N}, assortativity \citep{Newman2006a,Bassett2008}, clustering coefficient \citep{Watts1998}, characteristic path length \citep{Watts1998}, global and local efficiency \citep{Latora2001}, and rich club coefficient \citep{Collin2013}. An ITK module named Petiole (\url{https://github.com/jeffduda/Petiole}) was created to calculate these network measures from 2D connectivity
+matrices. This module incorporates and extends an existing implementation of a graph class \citep{Tustison2008} and provides ITK functions for a variety of graph metrics while using the Matlab-based Brain Connectivity Toolkit \citep{Rubinov2010} for algorithmic guidance. While many of these metrics include implementations for weighted graphs and/or directed graphs, here we focus on their application to unweighted, undirected graphs. Summaries and equations for these metrics are provided here:
 
-\emph{Size of Largest Connected Component}.  A connected component of a graph is a subset of the graph, $G_{i}$, where there exists a path between all pairs of nodes and for which no path exist to additional nodes in $G$. The largest connected component is the $G_{i}$ with the greatest number of nodes, $\|N(G_{i}\|$. This measure relates to the global level of connectivity within a subject's brain network~\cite{Bassett2011N}.
+\emph{Size of Largest Connected Component}.  A connected component of a graph is a subset of the graph, $G_{i}$, where there exists a path between all pairs of nodes and for which no path exist to additional nodes in $G$. The largest connected component is the $G_{i}$ with the greatest number of nodes, $\|N(G_{i}\|$. This measure relates to the global level of connectivity within a subject's brain network \citep{Bassett2011N}.
 
 \emph{Assortativity}. The degree of a node is the number of neighboring nodes that it connects to (i.e.\ shares an edge with). Assortativity measures how preferentially nodes of similar degree connect to one another \citep{Newman2006a} and is defined as:
 $$A =  \frac{ \frac{1}{E} \sum_{i}{j_i k_i} - [ \frac{1}{E} \sum_{i}{ \frac{1}{2} (j_i + k_i)} ]^2 }{ \frac{1}{E} \sum_{i}{ \frac{1}{2}( j_{i}^{2} + k_{i}^{2} ) } - [ \frac{1}{E} \sum_{i}{ \frac{1}{2} (j_i + k_i)} ]^2  } $$
@@ -336,7 +339,7 @@ where $j_i,k_i$ are the degrees of the nodes connected by edge $i$ and $E = \|E(
 $$C_i = \frac{e_i}{\|K_i\| ( \|K_i\| -1 )}$$
 where $K_i$ is the set of all nodes that share an edge with $i$ and $e_i$ is the set of all edges that connect nodes in $K_i$.
 
-\emph{Characteristic Path Length}. The pathlength, $L_{ij}$, that connects two nodes, $i$ and $j$, is defined as the minimum number of edges that must be traversed to travel from $i$ to $j$ \citep{Dijkstra1959}. The characteristic path length is the average pathlength over all possible pairs of connections in a graph. In an undirected graph this is:
+\emph{Characteristic Path Length}. The path length, $L_{ij}$, that connects two nodes, $i$ and $j$, is defined as the minimum number of edges that must be traversed to travel from $i$ to $j$ \citep{Dijkstra1959}. The characteristic path length is the average path length over all possible pairs of connections in a graph. In an undirected graph this is:
 $$L = \frac{1}{\|N(G)\|(\|N(G)\|-1)} \sum_{ij \in G, i \neq j}{L_{ij}}$$
 This measure is only defined for fully connected graphs. Here, we apply the density thresholding first and then extract the largest connected component in order to calculate the characteristic path length.
 
@@ -350,7 +353,7 @@ $$F_{glob} = \frac{1}{\|N(G)\|(\|N(G)\|-1)} \sum_{i \neq j \in G}{1/L_{ij}}$$
 $$F_{loc} = \frac{1}{\|N(G)\|} \sum_{i \in n}{F(G_i)}$$
 where $G_i$ is the subgraph of $G$ that results from removing node $i$.
 
-\emph{Rich Club Coefficient}
+\emph{Rich Club Coefficient}.
 This measures quantifies how preferentially the high-degree nodes (i.e. rich nodes)  in a graph connect to other high-degree nodes \citep{Colizza2006}.
 $$ R(G,k) = \frac{ \|E(G,k)\| }{ \|N(G,k)\| ( \|N(G,k)\|-1 ) } $$
 where $N(G,k)$ is the set of nodes of degree k or higher and $E(G,k)$ is the set of edges connecting two nodes in $N(G,k)$.
@@ -370,9 +373,9 @@ examine the reproducibility of within-subject topography compared to between sub
 
 Graph curves are used to examine the reproducibility of the graph metrics as a function of an independent parameter, typically graph density. At each point along the curve, reproducibility of the metric is quantified using the ICC:
 $$ICC = \frac{\sigma_{bs}^{2}}{\sigma_{bs}^{2} + \sigma_{ws}^{2}} $$
-where $\sigma_{bs}^{2}$ is the between-subject variance and $\sigma_{ws}^{2}$ is the within subject variance. The 'ICC' package for  \R{} is used for this calculation. The ICC is plotted along with the mean graph metrics for each combination of algorithm and label set. At points where little to no variance exists in a graph metric, the ICC is not calculated as it becomes unstable under those conditions. The following guidelines may be used to interpret ICC values: ICC $<$ 0.2 'poor agreement'; 0.21 - 0.40 'fair agreement'; 0.41-0.60 moderate agreement; 0.61-0.80 'strong agreement'; ICC $>$ 0.8 'near perfect agrement \citep{Telesford2010,Montgomery2002}. Dashed lines indicating the boundaries of these categories have been included on all ICC plots to aid interpretation.
+where $\sigma_{bs}^{2}$ is the between-subject variance and $\sigma_{ws}^{2}$ is the within subject variance. The 'ICC' package for  \R{} is used for this calculation. The ICC is plotted along with the mean graph metrics for each combination of algorithm and label set. At points where little to no variance exists in a graph metric, the ICC is not calculated as it becomes unstable under those conditions. The following guidelines may be used to interpret ICC values: ICC $<$ 0.2 'poor agreement'; 0.21 - 0.40 'fair agreement'; 0.41-0.60 moderate agreement; 0.61-0.80 'strong agreement'; ICC $>$ 0.8 'near perfect agreement' \citep{Telesford2010,Montgomery2002}. Dashed lines indicating the boundaries of these categories have been included on all ICC plots to aid interpretation.
 
-To identify group diferences that result from fiber tracking algorithm we incorporated methods from functional data analysis (FDA) which treats each curve as a function. For each group, the set of all curves were averaged to create a single mean curve.  While there are a variety of methods for computing the difference between two curves, here we chose the simplest method, the non-parametric permutation test. Each mean curve was treated a function and the area between the group mean curves was found. Individual group assignments were then permuted using random sampling without replacement and then  used to calculate mean curves . The area between the random-group mean curves was calculated. This was performed iteratively (i=10000). We recorded, x, the number of times area between the mean curves from the randomly assigned groups is larger than the area between the true group mean curves. The p-value for the true group difference is then defined as $x/i$. We report these differences for between-algorithm curves as they derive from graph of equal size, but do compare curves that derive from different anatomical label sets.
+To identify group differences that result from fiber tracking algorithm we incorporated methods from functional data analysis (FDA) which treats each curve as a function. For each group, the set of all curves were averaged to create a single mean curve.  While there are a variety of methods for computing the difference between two curves, here we chose the simplest method, the non-parametric permutation test. Each mean curve was treated as a function and the area between the group mean curves was found. Individual group assignments were then permuted using random sampling without replacement and then  used to calculate mean curves. The area between the random-group mean curves was calculated. This was performed iteratively (i=10000). We recorded, x, the number of times area between the mean curves from the randomly assigned groups is larger than the area between the true group mean curves. The p-value for the true group difference is then defined as $x/i$. We report these differences for between-algorithm curves as they derive from graph of equal size, but do compare curves that derive from different anatomical label sets.
 
 %\textbf{Figure 1.}{ Enter the caption for your figure here.  Repeat as  necessary for each of your figures.}\label{fig:01}% Don't add the figures in the LaTeX files, please upload them when submitting the article. Frontiers will add the figures at the end of the provisional pdf.
 
@@ -408,7 +411,7 @@ inter-subject overlap across the range of densities as illustrated in
 figure \ref{fig:dice}. Permutation testing of intra-subject dice
 vs. density curves did not reveal any significant differences between
 algorithms for either label set. However, a number of differences were
-found in the inter-subject comparions. The resulting p-values are
+found in the inter-subject comparisons. The resulting p-values are
 listed in table \ref{tab:dicep}. 
 
 \begin{figure}
@@ -527,7 +530,7 @@ changes as a function of $k$, the node degree that determines what is considered
 mean graph curves and ICC coefficients are illustrated in figure \ref{fig:richclub}. The results are similar to the examinations
 over graph density in that the same shape appears for both label sets, but with a scaling difference and the tracking algorithms
 have similar shapes but within the AAL networks, differences were found in the RK4-FACT (p$=$0.0338) and RK4-TEND (p$=$0.0252) 
-comparisons. The p-values for all comparisons are listed in table \ref{tab:richp}
+comparisons. The p-values for all comparisons are listed in table \ref{tab:richp}.
 
 \begin{figure}
 \begin{center}
@@ -613,7 +616,7 @@ papers that focus on the selection of deterministic tracking algorithm. To facil
 graph metrics as a function of graph density, we first examined the reliability of identifying
 subgraphs by thresholding. Using the dice coefficient as a measure of overlap we demonstrated
 that the intra subject agreement was much higher than the inter subject agreement across all tracking algorithms and 
-label sets. No significant differences were found for intra-subject comparisons. The inter-subject comparions indicate that 
+label sets. No significant differences were found for intra-subject comparisons. The inter-subject comparisons indicate that 
 the TEND method most consistently identifies similar subgraphs at a given density. However, further analysis 
 of additional tracking parameters is necessary to determine the full set of conditions under which this result holds.
 
@@ -666,13 +669,13 @@ clear due to a lack of sufficient context.
 An additional limitation of this work is the use of streamline count matrices as the basis for thresholding to create constant
 density graphs. Multiple options exist for normalizing the streamline count matrices using the volumes of 
 the target cortical regions and/or the average length of the streamlines the connect two regions. The volume based
-normalization may accomodate the differences that are seen between graph curves that were generated using 
+normalization may accommodate the differences that are seen between graph curves that were generated using 
 the different anatomical labels. However, the focus here was on the influence of the fiber tracking and no direct
 comparisons were made between graph curves generated from the different label sets. A number of additional options
 exist for creating a weighted connectivity matrix including the average FA of fibers that connect two regions. Since the data set
 examined also includes magnetization transfer data, the average magnetization transfer ratio along streamlines 
 could potentially be useful as it directly related to myelin content in white matter. These issues were beyond the scope 
-of the current study but would made for an intriguing extension of the current work. 
+of the current study but would make for an intriguing extension of the current work. 
 
 The selection of graph metrics for analysis is another limitation of the study. An exhaustive examination of all
 possible graph metrics was not feasible so metrics that have been studied previously were chosen to give additional
