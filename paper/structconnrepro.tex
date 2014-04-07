@@ -314,14 +314,14 @@ FACT & Euler & RK4 & TenD \\
 \subsection{Graph generation}
 While the nodes of a graph were defined using anatomical labels, the edges of the graph were defined by using
 fiber tractography to identify white matter pathways that connect brain regions. 
-For a given set of streamlines, the \texttt{connmat} tool provided by  the Camino toolkit was used to generate
-a connectivity matrix that records how many streamlines connect each pair of
-regions in a given set of target regions. This program starts at the seed point for a streamline and proceeds outward in each
+For a given set of streamlines, the \texttt{connmat} tool provided by the Camino toolkit was used to generate
+a connectivity matrix that records how many streamlines connect each pair of target regions. 
+This program starts at the seed point for a streamline and proceeds outward in each
 direction to determines the two target regions encountered. Only streamlines that connect two unique regions are retained and
 a given streamline may be only be counted as connecting a single pair of target regions. Fiber tractography does not provide a measure
 of directionality (i.e.\ neither node can be considered a starting point or ending point) so the resulting matrices yield undirected graphs.
 
-Graph are often compared by first ensuring that they have the same density \citep{Achard2006,Bassett2006}, where density for an undirected graph is defined as:
+Graphs are often compared by first ensuring that they have the same density \citep{Achard2006,Bassett2006}, where density for an undirected graph is defined as:
 $$D(G) = \frac{\|E(G)\|}{( \|N(G)\| (\|N(G)\|-1) )} $$
 where $N(G)$ is the set of all nodes in graph $G$ and $E(G)$ is the set of all edges in $G$. The number of nodes in the graph and the desired density determine the number of edges that the graph should contain. Edges of higher weights are given priority and lower weighted edges are removed to obtain the desired density level. The weights of the remaining edges are then set to 1 for a final binarized graph. This cumulative thresholding provides a normalized method for comparing network measures as it results in the comparison of graphs with an equal percentage of significant connections. Graphs are typically compared over a range of density levels.  Here, we only directly compare measures obtained from graphs with an equal number of nodes and thus an equal number of edges after density thresholding.
 
@@ -361,7 +361,7 @@ where $N(G,k)$ is the set of nodes of degree k or higher and $E(G,k)$ is the set
 
 
 \subsection{Graph curves}
-The metrics listed above are all applied to thresholded binary graphs. As discussed earlier, this binary graph result from thresholding at a constant density. These metrics may then be treated as functional curves of metric vs. graph density. By doing this, we are able to compare binary graphs in a way that incorporates the continuous structure of the original connectivity matrices. The rich club coefficient however is dependent upon two parameters, the graph density and, $k$, the degree threshold used to determined what constitutes a rich-node. For this metric we threshold at the highest density common to all graphs and explore how the value changes with $k$. For all other metrics, we examine their curves as a function of graph density. 
+The metrics listed above are all applied to thresholded binary graphs. As discussed earlier, these binary graphs result from thresholding at a constant density. The metrics may then be treated as functional curves of metric vs. graph density. By doing this, we are able to compare binary graphs in a way that incorporates the continuous structure of the original connectivity matrices. The rich club coefficient however is dependent upon two parameters, the graph density and $k$, the degree threshold used to determined what constitutes a rich-node. For this metric we threshold at the highest density common to all graphs and explore how the value changes with $k$. For all other metrics, we examine their curves as a function of graph density. 
 
 \subsection{Statistical analysis}
 Before examining how the graph metrics change with density it is necessary to examine the maximum density of the graphs to determine the range over which graphs may be compared. Additionally, it is interesting to examine the topological similarity in the thresholded graphs. This is done using the dice coefficient which measures similarity between two graphs as:
@@ -374,9 +374,9 @@ examine the reproducibility of within-subject topography compared to between sub
 
 Graph curves are used to examine the reproducibility of the graph metrics as a function of an independent parameter, typically graph density. At each point along the curve, reproducibility of the metric is quantified using the ICC:
 $$ICC = \frac{\sigma_{bs}^{2}}{\sigma_{bs}^{2} + \sigma_{ws}^{2}} $$
-where $\sigma_{bs}^{2}$ is the between-subject variance and $\sigma_{ws}^{2}$ is the within subject variance. The 'ICC' package for  \R{} is used for this calculation. The ICC is plotted along with the mean graph metrics for each combination of algorithm and label set. At points where little to no variance exists in a graph metric, the ICC is not calculated as it becomes unstable under those conditions. The following guidelines may be used to interpret ICC values: ICC $<$ 0.2 'poor agreement'; 0.21 - 0.40 'fair agreement'; 0.41-0.60 moderate agreement; 0.61-0.80 'strong agreement'; ICC $>$ 0.8 'near perfect agreement' \citep{Telesford2010,Montgomery2002}. Dashed lines indicating the boundaries of these categories have been included on all ICC plots to aid interpretation.
+where $\sigma_{bs}^{2}$ is the between-subject variance and $\sigma_{ws}^{2}$ is the within subject variance. The `ICC' package for  \R{} is used for this calculation. The ICC is plotted along with the mean graph metrics for each combination of algorithm and label set. At points where little to no variance exists in a graph metric, the ICC is not calculated as it becomes unstable under those conditions. The following guidelines may be used to interpret ICC values: ICC $<$ 0.2 `poor agreement'; 0.21 - 0.40 `fair agreement'; 0.41-0.60 moderate agreement; 0.61-0.80 `strong agreement'; ICC $>$ 0.8 `near perfect agreement' \citep{Telesford2010,Montgomery2002}. Dashed lines indicating the boundaries of these categories have been included on all ICC plots to aid interpretation.
 
-To identify group differences that result from fiber tracking algorithm we incorporated methods from functional data analysis (FDA) which treats each curve as a function. For each group, the set of all curves were averaged to create a single mean curve.  While there are a variety of methods for computing the difference between two curves, here we chose the simplest method, the non-parametric permutation test. Each mean curve was treated as a function and the area between the group mean curves was found. Individual group assignments were then permuted using random sampling without replacement and then  used to calculate mean curves. The area between the random-group mean curves was calculated. This was performed iteratively (i=10000). We recorded, x, the number of times area between the mean curves from the randomly assigned groups is larger than the area between the true group mean curves. The p-value for the true group difference is then defined as $x/i$. We report these differences for between-algorithm curves as they derive from graph of equal size, but do compare curves that derive from different anatomical label sets.
+To identify group differences that result from the fiber tracking algorithm we incorporated methods from functional data analysis (FDA), which treats each curve as a function. For each group, the set of all curves were averaged to create a single mean curve.  While there are a variety of methods for computing the difference between two curves, here we chose the simplest method, the non-parametric permutation test. Each mean curve was treated as a function and the area between the group mean curves was found. Individual group assignments were then permuted using random sampling without replacement and then used to calculate mean curves. The area between the random-group mean curves was calculated. This was performed iteratively ($i=10000$). We recorded $x$, the number of times the area between the mean curves from the randomly assigned groups is larger than the area between the true group mean curves. The p-value for the true group difference is then defined as $x/i$. We report these differences for between-algorithm curves as they derive from graph of equal size, but do compare curves that derive from different anatomical label sets.
 
 %\textbf{Figure 1.}{ Enter the caption for your figure here.  Repeat as  necessary for each of your figures.}\label{fig:01}% Don't add the figures in the LaTeX files, please upload them when submitting the article. Frontiers will add the figures at the end of the provisional pdf.
 
@@ -386,7 +386,7 @@ To identify group differences that result from fiber tracking algorithm we incor
 %Results: This section may be divided by subheadings. Footnotes should not be used and have to be transferred into the main text
 \subsection{Network density}
 Maximal densities for connectivity matrices across all tracking
-algorithm ranged from 0.17 to 0.30 for the AAL labels and from 0.20 to
+algorithms ranged from 0.17 to 0.30 for the AAL labels and from 0.20 to
 0.41 for DKT31. Maximal densities in the DTK31 data was generally
 higher than in the AAL as illustrated in figure
 \ref{fig:density}. Both label sets had the same lowest-to-highest
@@ -418,7 +418,7 @@ listed in table \ref{tab:dicep}.
 \begin{figure}
 \begin{center}
 \includegraphics[width=0.5\linewidth]{figures/dice_overlap_plot.png} 
-\caption{Connectivity matrices were thresholded over a range of density values. At each density level, consistency of network topography was estimated by calculating the mean dice overlap for both intra subject and intersubject pairs.}
+\caption{Connectivity matrices were thresholded over a range of density values. At each density level, consistency of network topography was estimated by calculating the mean dice overlap for both intra subject and inter subject pairs.}
 \label{fig:dice}
 \end{center}
 \end{figure}
@@ -437,10 +437,10 @@ listed in table \ref{tab:dicep}.
 
 \begin{table*}[!t]
 \processtable{Functional data analysis is used along with permutation
-  testing to look for differences in dice overlap measures between graph 
+  testing to look for differences in dice overlap measures between graphs 
 generated from different fiber tracking algorithms. Upper triangular p-values
 are for the AAL labels, while lower triangular are for the DTK31 label
-set (* indicated significance).\label{tab:dicep}}
+set (* indicates significance at $p = 0.05$).\label{tab:dicep}}
 {
 \begin{tabular}{l | llll | llll }
 \midrule
@@ -494,9 +494,9 @@ E & F
 \processtable{Functional data analysis is used along with permutation
   testing to look for pair-wise differences in graph-metric vs. graph-density curves that result from different
   fiber tracking algorithms and label sets. Only the first time-point for each
-  subject is used. For each metric, the upper-triangular values are for p-values for
+  subject is used. For each metric, the upper-triangular values are p-values for
   the AAL labels while the lower-triangular values were generated with
-  the DKT31 label set (* indicated significance).\label{tab:permtesting}}
+  the DKT31 label set (* indicates significance at $p = 0.05$).\label{tab:permtesting}}
 {\begin{tabular}{l | llll | llll }
 \midrule
  & \multicolumn{4}{c}{Clustering Coefficient} &  \multicolumn{4}{c}{Characteristic Path Length} \\ 
@@ -547,7 +547,7 @@ comparisons. The p-values for all comparisons are listed in table \ref{tab:richp
   testing to look for differences in rich club coefficients  
 generated from different fiber tracking algorithms. Upper triangular p-values
 are for the AAL labels, while lower triangular are for the DTK31 label
-set  (* indicated significance).\label{tab:richp}}
+set  (* indicates significance at $p = 0.05$).\label{tab:richp}}
 {
 \begin{tabular}{l | llll }
 \midrule
